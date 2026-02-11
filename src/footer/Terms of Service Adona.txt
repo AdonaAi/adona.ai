@@ -1,0 +1,181 @@
+Adona Ai – Terms and Conditions
+
+Effective Date: January 22, 2025
+
+These Terms of Service ("Terms") govern your access to and use of the Services provided by Adona Ai ("Adona", "Company", "we", "us", "our") to you ("Client", "Customer", "you", "your").
+
+By accessing or using our Services, you agree to be bound by these Terms. If you do not agree to these Terms, you must immediately cease using our Services.
+
+1. Definitions
+
+1.1 "Account" means the user profile required to access the Services, created by registering at https://adona.ai
+
+1.2 "Brand" means your trademark and associated visual identity submitted for use with the Services
+
+1.3 "Credits" means virtual credits enabling you to generate and download Content
+
+1.4 "Content" means all marketing materials (texts, images, emails, ads) generated through the Services
+
+1.5 "Services" means Adona’s AI-powered content creation platform enabling you to generate Content
+
+1.6 "Subscription" means your enrollment and agreement to pay fees for ongoing access to the Services
+
+1.7 "Subscription Plan" means the specific plan level you subscribe to (Starter, Professional, or Scale)
+
+2. Access and Use
+
+2.1 Grant of Rights.
+We grant you a non-exclusive, non-transferable right to access and use the Services during your Subscription period solely for your internal business purposes.
+
+2.2 Restrictions.
+You shall not:
+
+Copy, reproduce, or reverse engineer the Services
+
+Use the Services for illegal purposes
+
+Upload content that violates third-party rights
+
+Attempt unauthorized access to our systems
+
+Use the Services to transmit harmful or inappropriate content
+
+Resell or sublicense the Services
+
+2.3 Account Security.
+You are responsible for maintaining the confidentiality of your Account credentials and for all activities conducted under your Account.
+
+3. Services
+
+3.1 Service Delivery.
+Services are deemed delivered upon providing access credentials, regardless of actual usage.
+
+3.2 AI-Generated Content.
+Due to the nature of AI, Content may not be unique and similar results may be generated for other users.
+
+3.3 Account Management.
+You may cancel your Account at any time by emailing adona.creative@gmail.com
+
+4. Subscription and Payment
+
+4.1 Fees.
+Current pricing is displayed at https://adona.ai
+. We may modify fees with 30 days’ notice.
+
+4.2 Billing Cycles.
+
+Monthly plans: Billed monthly in advance
+
+Quarterly plans: Billed every 3 months in advance
+
+Annual plans: Billed annually in advance
+
+Automatic renewal unless cancelled
+
+4.3 Cancellation.
+
+Cancellation takes effect at the end of your current billing period
+
+You retain access to the Services until the end of your paid period
+
+No partial refunds for unused time (except as provided in Section 4.6)
+
+4.4 Payment Methods.
+We accept major credit cards (Visa, Mastercard, American Express, Discover). You must provide accurate billing information.
+
+4.5 Credits.
+Unused Credits do not roll over between billing periods.
+
+4.6 Refund Policy.
+
+Full refund available within 14 days of subscription date
+
+Eligibility: You must not have created more than 35 content pieces
+
+Refund requests must be sent to adona.creative@gmail.com
+
+No refunds after 14 days or after creating more than 35 ads post-onboarding
+
+4.7 Promotional Pricing and Discounts.
+Any discount, promotional code, or reduced pricing applied at checkout applies only to the first billing cycle unless explicitly stated otherwise. After the initial discounted period, your Subscription will automatically renew at the then-current standard rate. By completing your purchase with a promotional discount, you acknowledge and agree to this pricing structure.
+
+5. Intellectual Property
+
+5.1 Adona Property.
+All Services, including software, algorithms, and platform elements, remain our exclusive property.
+
+5.2 Your Content.
+You retain rights to your Brand and input materials. You grant us a license to use them solely to provide the Services.
+
+5.3 Generated Content.
+You own the Content generated for you, subject to the non-exclusivity provisions in Section 3.2.
+
+6. Disclaimers
+
+6.1 "AS IS" BASIS.
+THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND.
+
+6.2 No Guarantee.
+We do not guarantee the Services will be uninterrupted, error-free, or meet your specific requirements.
+
+6.3 Limitation of Liability.
+Our total liability shall not exceed the fees paid by you in the six months preceding any claim.
+
+7. Data Privacy
+
+7.1 Data Use.
+We process your data solely to provide the Services, as detailed in our Privacy Policy.
+
+7.2 Data Security.
+We implement industry-standard security measures to protect your data.
+
+7.3 GDPR Compliance.
+We comply with applicable data protection laws, including GDPR.
+
+8. Termination
+
+8.1 By You.
+You may terminate at any time subject to the cancellation requirements in Section 4.3.
+
+8.2 By Us.
+We may suspend or terminate your access for:
+
+Breach of these Terms
+
+Non-payment
+
+Illegal or harmful use
+
+Violation of third-party rights
+
+9. Confidentiality
+
+Each party shall maintain the confidentiality of the other party's Confidential Information using reasonable care and shall not disclose it to third parties.
+
+10. General Provisions
+
+10.1 Entire Agreement.
+These Terms constitute the entire agreement between the parties.
+
+10.2 Modifications.
+We may update these Terms with 30 days’ notice. Continued use constitutes acceptance.
+
+10.3 Governing Law.
+These Terms are governed by the laws of Romania, without regard to conflict of law provisions.
+
+10.4 Severability.
+If any provision is unenforceable, the remaining provisions continue in effect.
+
+10.5 Assignment.
+You may not assign these Terms without our written consent.
+
+10.6 Force Majeure.
+Neither party is liable for delays due to circumstances beyond reasonable control.
+
+11. Contact Information
+
+Company: World Age Inno S.R.L
+Address: Bulveradul Unirii 60
+Country: Bucharest,Romania
+Email: adona.creative@gmail.com
+Website: https://adona.ai

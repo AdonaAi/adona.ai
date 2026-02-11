@@ -1,0 +1,30 @@
+<svg width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="moodGlow" x1="8" y1="8" x2="49" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#caf0f8" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#e0f2fe" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="moodFill" x1="18" y1="18" x2="39" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00b4d8"/>
+      <stop offset="1" stop-color="#0077b6"/>
+    </linearGradient>
+    <filter id="moodShadow" x="6" y="8" width="45" height="46" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00b4d8" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <circle cx="28.5" cy="29" r="24" fill="url(#moodGlow)"/>
+  <g filter="url(#moodShadow)">
+    <rect x="16" y="17" width="25" height="24" rx="5" fill="url(#moodFill)"/>
+  </g>
+  <!-- Grid layout for moodboard -->
+  <rect x="19" y="20" width="9" height="8" rx="2" fill="white" opacity="0.85"/>
+  <rect x="30" y="20" width="8" height="5" rx="1.5" fill="white" opacity="0.6"/>
+  <rect x="30" y="27" width="8" height="3" rx="1" fill="white" opacity="0.4"/>
+  <rect x="19" y="30" width="5" height="8" rx="1.5" fill="white" opacity="0.5"/>
+  <rect x="26" y="30" width="12" height="8" rx="2" fill="white" opacity="0.7"/>
+  <!-- Image mountain icon in main tile -->
+  <path d="M21 26L23 23L25.5 26.5" stroke="#00b4d8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <circle cx="25" cy="22" r="1" fill="#00b4d8" opacity="0.5"/>
+  <!-- Subtle shine -->
+  <path d="M18 20C18 18.3431 19.3431 17 21 17H25L18 24V20Z" fill="white" opacity="0.12"/>
+</svg>

@@ -1,0 +1,27 @@
+<svg width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="productGlow" x1="8" y1="8" x2="49" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#caf0f8" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#90e0ef" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="productFill" x1="18" y1="18" x2="39" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0077b6"/>
+      <stop offset="1" stop-color="#03045e"/>
+    </linearGradient>
+    <filter id="productShadow" x="6" y="8" width="45" height="46" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0077b6" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <circle cx="28.5" cy="29" r="24" fill="url(#productGlow)"/>
+  <g filter="url(#productShadow)">
+    <rect x="16" y="17" width="25" height="24" rx="5" fill="url(#productFill)"/>
+  </g>
+  <!-- Shopping bag handle -->
+  <path d="M23 22V20C23 17.2386 25.2386 15 28 15H29C31.7614 15 34 17.2386 34 20V22" stroke="white" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <!-- Bag body highlight -->
+  <rect x="19" y="24" width="19" height="14" rx="3" fill="white" opacity="0.15"/>
+  <!-- Star badge -->
+  <path d="M28.5 27L30 30L33.5 30.5L31 33L31.5 36.5L28.5 35L25.5 36.5L26 33L23.5 30.5L27 30L28.5 27Z" fill="white" opacity="0.9"/>
+  <!-- Subtle shine -->
+  <path d="M18 20C18 18.3431 19.3431 17 21 17H25L18 24V20Z" fill="white" opacity="0.12" />
+</svg>

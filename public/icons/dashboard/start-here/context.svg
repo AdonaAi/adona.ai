@@ -1,0 +1,28 @@
+<svg width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="contextGlow" x1="8" y1="8" x2="49" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dcfce7" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#bbf7d0" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="contextFill" x1="18" y1="18" x2="39" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#15803d"/>
+    </linearGradient>
+    <filter id="contextShadow" x="6" y="8" width="45" height="46" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#22c55e" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <circle cx="28.5" cy="29" r="24" fill="url(#contextGlow)"/>
+  <g filter="url(#contextShadow)">
+    <rect x="16" y="17" width="25" height="24" rx="5" fill="url(#contextFill)"/>
+  </g>
+  <!-- Document lines -->
+  <rect x="21" y="22" width="10" height="1.5" rx="0.75" fill="white" opacity="0.4"/>
+  <rect x="21" y="26" width="14" height="1.5" rx="0.75" fill="white" opacity="0.3"/>
+  <rect x="21" y="30" width="8" height="1.5" rx="0.75" fill="white" opacity="0.25"/>
+  <!-- Checkmark circle -->
+  <circle cx="33" cy="33" r="6" fill="white"/>
+  <path d="M30 33L32 35L36 31" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Subtle shine -->
+  <path d="M18 20C18 18.3431 19.3431 17 21 17H25L18 24V20Z" fill="white" opacity="0.12"/>
+</svg>
