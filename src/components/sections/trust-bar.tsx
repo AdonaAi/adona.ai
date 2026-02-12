@@ -10,15 +10,15 @@ const TrustBar = () => {
   ]
 
   return (
-    <div className="flex items-center justify-center py-4 md:py-10 px-4">
-      <div 
+    <div className="flex items-center justify-center py-2 md:py-4 px-4">
+      <div
         className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft"
       >
         {/* Avatar Stack */}
         <div className="flex -space-x-2.5">
           {avatars.map((src, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden flex-shrink-0"
               style={{ zIndex: avatars.length - index }}
             >
@@ -41,14 +41,14 @@ const TrustBar = () => {
           </span>
           <strong className="font-bold">4268</strong>
           <span className="text-[#636363]">customers</span>
-          
+
           {/* Star Icon */}
           <div className="ml-0.5 flex items-center justify-center">
-            <svg 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="#F9D423" 
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="#F9D423"
               className="w-4 h-4"
               xmlns="http://www.w3.org/2000/svg"
             >

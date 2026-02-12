@@ -15,7 +15,7 @@ import { ArrowRight } from 'lucide-react';
  */
 export default function Hero() {
   return (
-    <section id="home" className="relative flex flex-col items-center pt-[100px] pb-[40px] sm:pt-[120px] sm:pb-[50px] md:pt-[140px] md:pb-[60px] lg:pt-[180px] xl:pt-[220px] overflow-hidden bg-white">
+    <section id="home" className="relative flex flex-col items-center pt-[120px] sm:pt-[140px] md:pt-[160px] lg:pt-[200px] xl:pt-[220px] pb-[10px] sm:pb-[15px] md:pb-[20px] overflow-hidden bg-white">
       <div className="container relative z-10 flex flex-col items-center text-center px-4 sm:px-6 md:px-10">
 
         {/* Badge */}
@@ -46,6 +46,25 @@ export default function Hero() {
             Buy now
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
+        </div>
+
+        {/* Powered By Badge */}
+        <div className="mb-8 sm:mb-10 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-400 flex items-center justify-center gap-3">
+          <div className="w-5 h-5 sm:w-6 sm:h-6 relative">
+            <Image
+              src="https://framerusercontent.com/images/GyeA4IFDAYocEXBquIG7v6HrA.png"
+              alt="OpenAI Logo"
+              fill
+              className="object-contain"
+              unoptimized
+            />
+          </div>
+          <div className="h-4 w-[1px] bg-gray-300"></div>
+          <div className="flex items-center gap-2">
+            <span className="text-[13px] sm:text-[14px] font-bold text-gray-700">Powered by OpenAI</span>
+            <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+            <span className="text-[13px] sm:text-[14px] font-medium text-gray-500">Leading AI model</span>
+          </div>
         </div>
 
 

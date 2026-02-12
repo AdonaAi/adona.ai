@@ -23,7 +23,7 @@ const IdeasCloud = () => {
   ];
 
   return (
-    <section className="bg-white py-[120px] overflow-hidden">
+    <section className="bg-white py-[60px] overflow-hidden">
       <div className="container mx-auto px-10">
         <div className="flex flex-col items-center gap-10">
           <h2 className="text-[24px] font-bold text-black font-sans leading-tight tracking-[-0.03em] mb-4">Access Thousands of Creative Concepts</h2>

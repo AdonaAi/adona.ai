@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const BrandDNA = () => {
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-white overflow-hidden" id="your-brand-dna">
+    <section className="py-4 sm:py-6 md:py-8 lg:py-10 xl:py-12 bg-white overflow-hidden" id="your-brand-dna">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         {/* Headline + Sub-headline */}
         <div className="flex flex-col items-center text-center mb-10 sm:mb-12 md:mb-14 lg:mb-16 gap-3 sm:gap-4">

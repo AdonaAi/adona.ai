@@ -12,7 +12,7 @@ const IntelligenceShowcase = () => {
     const lineColors = ['#3b82f6', '#a855f7', '#ec4899', '#ec4899', '#a855f7', '#3b82f6'];
 
     return (
-        <section className="bg-white py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 overflow-hidden">
+        <section className="bg-white py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 md:px-8">
                 <div className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
                     <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-black max-w-[800px] mx-auto leading-[1.15] tracking-tight px-4">

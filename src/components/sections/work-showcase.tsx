@@ -76,7 +76,7 @@ const WorkShowcase: React.FC = () => {
   return (
     <section
       id="features"
-      className="bg-white py-[60px] md:py-[100px] lg:py-[120px] overflow-hidden"
+      className="bg-white pt-[40px] md:pt-[60px] lg:pt-[80px] pb-0 overflow-hidden"
     >
       <div className="container mx-auto">
         {/* Headline */}

@@ -10,7 +10,7 @@ import { ArrowRight } from 'lucide-react';
  */
 export default function FinalCTA() {
   return (
-    <section className="bg-white pt-16 sm:pt-20 md:pt-24 lg:pt-28 xl:pt-32 pb-0 px-4 sm:px-6 md:px-8 lg:px-10 flex flex-col items-center justify-center text-center">
+    <section className="bg-white pt-6 sm:pt-8 md:pt-10 lg:pt-12 xl:pt-14 pb-0 px-4 sm:px-6 md:px-8 lg:px-10 flex flex-col items-center justify-center text-center">
       <div className="container max-w-[1200px] flex flex-col items-center gap-8 sm:gap-10 md:gap-12">
 
         {/* Main Content Stack */}

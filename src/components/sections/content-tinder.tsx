@@ -7,7 +7,7 @@ import Image from 'next/image';
  */
 export default function ContentTinderSection() {
   return (
-    <section className="bg-white py-[120px] px-10 md:px-20 lg:px-0">
+    <section className="bg-white py-[20px] px-10 md:px-20 lg:px-0">
       <div className="container max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}

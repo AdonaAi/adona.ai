@@ -111,25 +111,25 @@ export default function FAQSection() {
 
       <style jsx global>{`
         .section-padding {
-          padding-top: 60px;
-          padding-bottom: 60px;
+          padding-top: 20px;
+          padding-bottom: 20px;
         }
         @media (min-width: 640px) {
           .section-padding {
-            padding-top: 80px;
-            padding-bottom: 80px;
+            padding-top: 30px;
+            padding-bottom: 30px;
           }
         }
         @media (min-width: 768px) {
           .section-padding {
-            padding-top: 100px;
-            padding-bottom: 100px;
+            padding-top: 40px;
+            padding-bottom: 40px;
           }
         }
         @media (min-width: 1024px) {
           .section-padding {
-            padding-top: 120px;
-            padding-bottom: 120px;
+            padding-top: 50px;
+            padding-bottom: 50px;
           }
         }
         .h2 {

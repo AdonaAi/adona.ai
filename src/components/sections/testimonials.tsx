@@ -4,7 +4,7 @@ import { BadgeCheck, Plus } from 'lucide-react';
 
 const Testimonials = () => {
   return (
-    <section className="py-24 bg-[#FAFAFA] relative overflow-hidden">
+    <section className="py-6 bg-[#FAFAFA] relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
 
         {/* Header */}

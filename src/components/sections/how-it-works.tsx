@@ -29,7 +29,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="bg-[#fafafa] py-[160px] overflow-hidden">
+    <section className="bg-[#fafafa] py-[40px] overflow-hidden">
       <div className="container max-w-[1200px] mx-auto px-6">
         <div className="text-center mb-20 md:mb-32">
           <h2 className="text-[32px] md:text-[48px] font-bold leading-[1.2] text-[#000000] tracking-tight">

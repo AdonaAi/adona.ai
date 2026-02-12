@@ -38,9 +38,9 @@ const TextRevealSection: React.FC = () => {
     <section
       ref={containerRef}
       id="integrations"
-      className="relative min-h-[150vh] flex flex-col items-center justify-center bg-white py-[120px] px-10"
+      className="relative min-h-[120vh] flex flex-col items-center justify-start bg-white pt-[40px] pb-[40px] px-10"
     >
-      <div className="sticky top-[20%] max-w-[1200px] w-full mx-auto space-y-12">
+      <div className="sticky top-[15%] max-w-[1200px] w-full mx-auto space-y-8">
         <Paragraph
           progress={scrollYProgress}
           range={[0, 0.33]}
