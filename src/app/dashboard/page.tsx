@@ -4,147 +4,63 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import SettingsModal from '@/components/dashboard/settings-modal';
-import { Home, MessageCircle, CalendarDays, FolderOpen, Dna, Sparkles, Settings, CircleHelp, Globe, Copy, ChevronsUpDown } from 'lucide-react';
+import { Home, MessageCircle, CalendarDays, FolderOpen, Dna, Sparkles, Settings, CircleHelp, Globe, Copy, ChevronsUpDown, Menu, X } from 'lucide-react';
 
 export default function DashboardPage() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <>
-      {/* Profile Dropdown Backdrop */}
-      {profileMenuOpen && (
-        <div className="fixed inset-0 z-[90]" onClick={() => setProfileMenuOpen(false)} />
+      {/* Profile/Mobile Menu Backdrop */}
+      {(profileMenuOpen || mobileMenuOpen) && (
+        <div
+          className="fixed inset-0 z-[90] bg-black/20 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none"
+          onClick={() => {
+            setProfileMenuOpen(false);
+            setMobileMenuOpen(false);
+          }}
+        />
       )}
 
       <div className="bg-white text-[#03045e] min-h-screen flex transition-colors duration-300">
-        <aside className="w-[220px] bg-white border-r border-[#e2e8f0] flex flex-col shrink-0">
-          <div className="p-6 pb-2">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-[18px] font-extrabold tracking-tight text-[#03045e]">adona.ai</span>
-            </Link>
-          </div>
-          <div className="px-3 pt-4 space-y-6 flex-1">
-            <div>
-              <p className="px-3 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-[0.15em] mb-2">Workspace</p>
-              <nav className="space-y-0.5">
-                <Link className="flex items-center gap-3 px-3 py-2.5 bg-gradient-to-r from-[#caf0f8]/60 to-transparent text-[#03045e] font-semibold rounded-xl transition-all" href="/dashboard">
-                  <Home size={18} strokeWidth={2} className="text-[#0077b6]" />
-                  <span className="text-[14px]">Home</span>
-                </Link>
-                <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/chat">
-                  <MessageCircle size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
-                  <span className="text-[14px]">Chat</span>
-                </Link>
-                <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/calendar">
-                  <CalendarDays size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
-                  <span className="text-[14px]">Calendar</span>
-                </Link>
-              </nav>
-            </div>
-            <div>
-              <p className="px-3 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-[0.15em] mb-2">Assets</p>
-              <nav className="space-y-0.5">
-                <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/library">
-                  <FolderOpen size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
-                  <span className="text-[14px]">Library</span>
-                </Link>
-                <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/dna">
-                  <Dna size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
-                  <span className="text-[14px]">DNA</span>
-                </Link>
-                <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/inspo">
-                  <Sparkles size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
-                  <span className="text-[14px]">Inspo</span>
-                </Link>
-              </nav>
-            </div>
-          </div>
-          <div className="p-3 space-y-3">
-            <div className="flex items-center gap-3 p-2.5 bg-[#caf0f8]/40 rounded-xl border border-[#90e0ef]/30">
-              <div className="w-9 h-9 bg-gradient-to-br from-[#0077b6] to-[#00b4d8] rounded-lg flex items-center justify-center">
-                <img alt="Mascot Avatar" className="w-7 h-7 object-contain rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkm7Psj4rCW0cvmKaKYUyeS63mlGQYakavCj643F-mYIpPnz41c8oAcmiXZdjxNml8gSZiknuA_YIPln4IdVViX6M9FdFanBVUU0a0B8PYRXYMB00b9cr-kM6a41MqQ89STyUIcv6v_cJLLOLZB_gdQl3sPDwMEtqTeFyJxYNHGLPDnCDq0dXcdFB_Cw7NKmAaJGor6C-M2N-LHMuYFzd-C-VK-roC9NloL9JdZ5ND7XBfw4HByPOcXLEuhovcqLMk2Gc6vwtaR_b4" />
-              </div>
-              <div className="text-xs">
-                <p className="text-[#03045e] font-semibold">Mascot Helper</p>
-                <p className="text-[#0077b6]/60">Ready to help</p>
-              </div>
-            </div>
-            <div className="relative">
-              <div
-                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center justify-between p-2.5 bg-[#f8fafc] hover:bg-[#caf0f8]/30 border border-[#e2e8f0] rounded-xl cursor-pointer transition-all"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center text-white text-[13px] font-bold">
-                    R
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#03045e]">roseskin</span>
-                </div>
-                <ChevronsUpDown size={16} className={`text-[#666666] transition-transform duration-200 ${profileMenuOpen ? 'rotate-180' : ''}`} />
-              </div>
 
-              {/* Profile Dropdown Menu */}
-              {profileMenuOpen && (
-                <div className="absolute bottom-full left-0 mb-2 w-[240px] bg-white rounded-2xl shadow-[0px_4px_40px_0px_rgba(3,4,94,0.12)] border border-[#e2e8f0] py-2 z-[100]">
-                  {/* Account */}
-                  <p className="px-4 pt-2 pb-1 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-wider">Account</p>
-                  <button
-                    onClick={() => { setProfileMenuOpen(false); setSettingsOpen(true); }}
-                    className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer"
-                  >
-                    <Settings size={16} strokeWidth={1.8} className="text-[#03045e]" />
-                    <span className="text-[14px] font-medium text-[#03045e]">Settings</span>
-                  </button>
-
-                  {/* Support */}
-                  <div className="border-t border-[#e2e8f0] my-1" />
-                  <p className="px-4 pt-2 pb-1 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-wider">Support</p>
-                  <button className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer">
-                    <CircleHelp size={16} strokeWidth={1.8} className="text-[#03045e]" />
-                    <span className="text-[14px] font-medium text-[#03045e]">Help Center</span>
-                  </button>
-
-                  {/* Recent accounts */}
-                  <div className="border-t border-[#e2e8f0] my-1" />
-                  <p className="px-4 pt-2 pb-1 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-wider">Recent accounts</p>
-                  <button className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer">
-                    <div className="w-5 h-5 rounded-full bg-[#caf0f8] flex items-center justify-center shrink-0">
-                      <span className="text-[10px] font-bold text-[#0077b6]">A</span>
-                    </div>
-                    <span className="text-[14px] font-medium text-[#03045e]">ai products</span>
-                  </button>
-                  <button className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer">
-                    <Globe size={16} strokeWidth={1.8} className="text-[#0077b6]" />
-                    <span className="text-[14px] font-medium text-[#03045e]">Add new</span>
-                  </button>
-
-                  {/* Current user footer */}
-                  <div className="border-t border-[#e2e8f0] mt-1" />
-                  <div className="flex items-center justify-between px-4 py-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center shrink-0">
-                        <span className="text-[13px] font-bold text-white">R</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-[14px] font-medium text-[#03045e]">roseskin</span>
-                        <span className="text-[11px] text-[#666666] truncate max-w-[120px]">crystalskinco@gmail...</span>
-                      </div>
-                    </div>
-                    <button className="w-6 h-6 flex items-center justify-center hover:bg-[#caf0f8]/40 rounded-md transition-colors cursor-pointer">
-                      <Copy size={14} className="text-[#666666]" />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+        {/* Desktop Sidebar */}
+        <aside className="hidden md:flex w-[220px] bg-white border-r border-[#e2e8f0] flex-col shrink-0">
+          <SidebarContent setProfileMenuOpen={setProfileMenuOpen} profileMenuOpen={profileMenuOpen} setSettingsOpen={setSettingsOpen} />
         </aside>
+
+        {/* Mobile Sidebar (Drawer) */}
+        <aside className={`fixed inset-y-0 left-0 z-[100] w-[260px] bg-white border-r border-[#e2e8f0] flex flex-col transition-transform duration-300 transform md:hidden ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="absolute top-4 right-4">
+            <button onClick={() => setMobileMenuOpen(false)} className="p-1 hover:bg-gray-100 rounded-md">
+              <X size={20} className="text-[#03045e]" />
+            </button>
+          </div>
+          <SidebarContent setProfileMenuOpen={setProfileMenuOpen} profileMenuOpen={profileMenuOpen} setSettingsOpen={setSettingsOpen} />
+        </aside>
+
         <main className="flex-1 flex flex-col relative overflow-hidden bg-white">
           {/* Header Bar */}
-          <div className="w-full relative overflow-hidden h-[56px] rounded-3xl" style={{ background: "#FBFBFB" }}>
-            <div className="flex justify-between items-center h-full px-2 gap-5 py-[10px] rounded-2xl">
-              <div className="flex items-center gap-2.5 px-2.5 p-0.5 bg-[#caf0f8] rounded-full">
+          <div className="w-full relative overflow-hidden h-auto min-h-[56px] rounded-3xl" style={{ background: "#FBFBFB" }}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center h-full px-4 gap-3 py-[10px] rounded-2xl">
+
+              {/* Mobile Menu Button - Top Row on Mobile */}
+              <div className="flex w-full sm:w-auto justify-between items-center sm:hidden">
+                <button
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="p-2 -ml-2 text-[#03045e] hover:bg-gray-100 rounded-lg"
+                >
+                  <Menu size={24} />
+                </button>
+                {/* Optional: Add Logo here if needed for mobile header */}
+              </div>
+
+              {/* Desktop Menu Button (Hidden on Mobile, visible if needed logic changes) - actually keeping previous logic but moved out of flex-col flow if needed */}
+              {/* Since we have a flex-col, the Menu button is now inside the top row div above. */}
+
+              <div className="flex items-center gap-2.5 px-2.5 p-0.5 bg-[#caf0f8] rounded-full w-full sm:w-auto">
                 <span className="text-[#0077b6] tracking-[0.02em] mt-1">
                   <span className="inline-flex items-center gap-1 text-[16px] font-medium whitespace-nowrap">
                     <Image alt="Fire" width={20} height={20} src="/fireIcon.svg" />
@@ -152,12 +68,13 @@ export default function DashboardPage() {
                   </span>
                 </span>
               </div>
-              <div className="flex items-center gap-5">
-                <span className="text-[16px] font-medium text-[#03045e] tracking-[0.02em]">
+
+              <div className="flex items-center gap-3 sm:gap-5 flex-1 justify-between sm:justify-center w-full sm:w-auto flex-wrap">
+                <span className="hidden lg:inline text-[16px] font-medium text-[#03045e] tracking-[0.02em]">
                   adona.ai <span className="font-bold">improves</span> with every piece <span className="font-bold">created:</span>
                 </span>
                 {/* Progress Bar */}
-                <div className="relative w-[225px] h-2.5 rounded-full border border-white">
+                <div className="relative w-full sm:w-[225px] h-2.5 rounded-full border border-white flex-1 sm:flex-none">
                   <div className="absolute inset-0 flex">
                     {[
                       { bg: "rgba(3, 4, 94, 0.1)", fill: "#03045e" },
@@ -175,14 +92,15 @@ export default function DashboardPage() {
                 </div>
                 <span className="text-xs font-medium text-[#03045e] tracking-[0.02em]"><span className="font-bold">0</span>/25</span>
               </div>
-              <div className="flex items-center gap-2.5 px-2.5 py-[7px] rounded-full whitespace-nowrap bg-[#caf0f8]/40 border border-[#90e0ef]/30">
+
+              <div className="flex items-center gap-2.5 px-2.5 py-[7px] rounded-full whitespace-nowrap bg-[#caf0f8]/40 border border-[#90e0ef]/30 w-full sm:w-auto justify-center sm:justify-start">
                 <span className="text-md font-medium tracking-[0.02em] text-[#0077b6]">Starter 🌱</span>
               </div>
             </div>
           </div>
 
           {/* Main Content */}
-          <div className="flex flex-col items-center p-5 pt-15 mt-5 w-full gap-5 relative overflow-y-auto flex-1">
+          <div className="flex flex-col items-center p-4 sm:p-5 pt-15 mt-5 w-full gap-5 relative overflow-y-auto flex-1">
             {/* Background gradient */}
             <div className="absolute top-0 left-0 right-0 z-0 pointer-events-none bg-white overflow-hidden h-screen rounded-[20px]" aria-hidden="true">
               <Image alt="" draggable={false} width={2560} height={1440} className="w-full h-full object-cover object-top opacity-90" src="/dashboard/gradient.png.svg" />
@@ -190,7 +108,7 @@ export default function DashboardPage() {
 
             <div className="flex flex-col justify-center items-center gap-5 w-full max-w-[1080px]">
               {/* Top 3 Cards */}
-              <div className="grid grid-cols-3 gap-5 w-full relative z-10 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full relative z-10 mb-5">
                 {/* Start Here Card */}
                 <div className="relative rounded-[20px] p-5 transition-all bg-white overflow-hidden flex flex-col h-[310px] cursor-pointer">
                   <div className="flex flex-col justify-between h-full gap-5">
@@ -290,7 +208,7 @@ export default function DashboardPage() {
                     <div className="flex-shrink-0 w-full snap-start snap-always">
                       <div className="w-full h-full bg-white flex flex-col group">
                         <div className="relative h-[190px] overflow-hidden rounded-b-[16px]">
-                          <Image alt="Moodboard" fill className="object-cover object-bottom" src="/dashboard/card_bgs/moodboard_card.png" />
+                          <Image alt="Moodboard" fill className="object-cover object-bottom" src="/dashboard/card_bgs/moodboard_card.svg" />
                         </div>
                         <div className="flex flex-col justify-between flex-1 p-4 bg-white">
                           <p className="text-[16px] font-medium text-[#6E6E73] leading-snug">
@@ -304,7 +222,7 @@ export default function DashboardPage() {
                     <div className="flex-shrink-0 w-full snap-start snap-always">
                       <div className="w-full h-full bg-white flex flex-col group">
                         <div className="relative h-[190px] overflow-hidden rounded-b-[16px]">
-                          <Image alt="Chat with adona.ai" fill className="object-cover object-center" src="/dashboard/card_bgs/chat_card.png" />
+                          <Image alt="Chat with adona.ai" fill className="object-cover object-center" src="/dashboard/card_bgs/chat_card.svg" />
                         </div>
                         <div className="flex flex-col justify-between flex-1 p-4 bg-white">
                           <p className="text-[16px] font-medium text-[#6E6E73] leading-snug">
@@ -318,7 +236,7 @@ export default function DashboardPage() {
                     <div className="flex-shrink-0 w-full snap-start snap-always">
                       <div className="w-full h-full bg-white flex flex-col group">
                         <div className="relative h-[190px] overflow-hidden rounded-b-[16px]">
-                          <Image alt="Video Creation" fill className="object-cover object-center" src="/dashboard/card_bgs/video_card.png" />
+                          <Image alt="Video Creation" fill className="object-cover object-center" src="/dashboard/card_bgs/video_card.svg" />
                         </div>
                         <div className="flex flex-col justify-between flex-1 p-4 bg-white">
                           <p className="text-[16px] font-medium text-[#6E6E73] leading-snug">
@@ -332,7 +250,7 @@ export default function DashboardPage() {
                     <div className="flex-shrink-0 w-full snap-start snap-always">
                       <div className="w-full h-full bg-white flex flex-col group">
                         <div className="relative h-[190px] overflow-hidden rounded-b-[16px]">
-                          <Image alt="Integrations" fill className="object-cover object-center" src="/dashboard/card_bgs/integrations_card.png" />
+                          <Image alt="Integrations" fill className="object-cover object-center" src="/dashboard/card_bgs/integrations_card.svg" />
                         </div>
                         <div className="flex flex-col justify-between flex-1 p-4 bg-white">
                           <p className="text-[16px] font-medium text-[#6E6E73] leading-snug">
@@ -349,12 +267,12 @@ export default function DashboardPage() {
               {/* Most Popular Section */}
               <div className="w-full relative z-30 mb-5">
                 <h2 className="text-[24px] font-bold text-[#03045e] mb-5">Most popular</h2>
-                <div className="grid grid-cols-4 gap-5 mb-5">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
                   {[
-                    { name: "Concept", desc: "Describe your idea", bg: "/dashboard/card_bgs/concept.png" },
-                    { name: "Clone", desc: "Recreate others' content", bg: "/dashboard/card_bgs/clone.png" },
-                    { name: "Variations", desc: "Try something new", bg: "/dashboard/card_bgs/variations.png" },
-                    { name: "Animate", desc: "Turn images into videos", bg: "/dashboard/card_bgs/animate.png" },
+                    { name: "Concept", desc: "Describe your idea", bg: "/dashboard/card_bgs/concept.svg" },
+                    { name: "Clone", desc: "Recreate others' content", bg: "/dashboard/card_bgs/clone.svg" },
+                    { name: "Variations", desc: "Try something new", bg: "/dashboard/card_bgs/variations.svg" },
+                    { name: "Animate", desc: "Turn images into videos", bg: "/dashboard/card_bgs/animate.svg" },
                   ].map((item) => (
                     <div key={item.name} className="rounded-[20px] transition-all cursor-pointer hover:opacity-90">
                       <div
@@ -371,11 +289,11 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Image / Video / Email Cards */}
-                <div className="grid grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {[
-                    { name: "Image", desc: "Create high-performing ads on demand", bg: "/dashboard/card_bgs/image_card.png" },
-                    { name: "Video", desc: "Create engaging video ads and stories", bg: "/dashboard/card_bgs/video_card.png" },
-                    { name: "Email", desc: "Create emails that work, faster", bg: "/dashboard/card_bgs/email_card.png" },
+                    { name: "Image", desc: "Create high-performing ads on demand", bg: "/dashboard/card_bgs/image_card.svg" },
+                    { name: "Video", desc: "Create engaging video ads and stories", bg: "/dashboard/card_bgs/video_card.svg" },
+                    { name: "Email", desc: "Create emails that work, faster", bg: "/dashboard/card_bgs/email_card.svg" },
                   ].map((item) => (
                     <div key={item.name} className="rounded-[20px] transition-all cursor-pointer h-full hover:opacity-90">
                       <div
@@ -416,6 +334,134 @@ export default function DashboardPage() {
       </div>
 
       <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
+    </>
+  );
+}
+
+// Extracted Sidebar Content Component for reuse in Desktop and Mobile Sidebars
+function SidebarContent({ setProfileMenuOpen, profileMenuOpen, setSettingsOpen }: any) {
+  return (
+    <>
+      <div className="p-6 pb-2">
+        <Link href="/" className="flex items-center gap-2">
+          <span className="text-[18px] font-extrabold tracking-tight text-[#03045e]">adona.ai</span>
+        </Link>
+      </div>
+      <div className="px-3 pt-4 space-y-6 flex-1 text-left">
+        <div>
+          <p className="px-3 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-[0.15em] mb-2">Workspace</p>
+          <nav className="space-y-0.5">
+            <Link className="flex items-center gap-3 px-3 py-2.5 bg-gradient-to-r from-[#caf0f8]/60 to-transparent text-[#03045e] font-semibold rounded-xl transition-all" href="/dashboard">
+              <Home size={18} strokeWidth={2} className="text-[#0077b6]" />
+              <span className="text-[14px]">Home</span>
+            </Link>
+            <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/chat">
+              <MessageCircle size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
+              <span className="text-[14px]">Chat</span>
+            </Link>
+            <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/calendar">
+              <CalendarDays size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
+              <span className="text-[14px]">Calendar</span>
+            </Link>
+          </nav>
+        </div>
+        <div>
+          <p className="px-3 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-[0.15em] mb-2">Assets</p>
+          <nav className="space-y-0.5">
+            <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/library">
+              <FolderOpen size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
+              <span className="text-[14px]">Library</span>
+            </Link>
+            <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/dna">
+              <Dna size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
+              <span className="text-[14px]">DNA</span>
+            </Link>
+            <Link className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group" href="/dashboard/inspo">
+              <Sparkles size={18} strokeWidth={1.8} className="text-[#666666] group-hover:text-[#0077b6]" />
+              <span className="text-[14px]">Inspo</span>
+            </Link>
+          </nav>
+        </div>
+      </div>
+      <div className="p-3 space-y-3 mt-auto">
+        <div className="flex items-center gap-3 p-2.5 bg-[#caf0f8]/40 rounded-xl border border-[#90e0ef]/30">
+          <div className="w-9 h-9 bg-gradient-to-br from-[#0077b6] to-[#00b4d8] rounded-lg flex items-center justify-center">
+            <img alt="Mascot Avatar" className="w-7 h-7 object-contain rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkm7Psj4rCW0cvmKaKYUyeS63mlGQYakavCj643F-mYIpPnz41c8oAcmiXZdjxNml8gSZiknuA_YIPln4IdVViX6M9FdFanBVUU0a0B8PYRXYMB00b9cr-kM6a41MqQ89STyUIcv6v_cJLLOLZB_gdQl3sPDwMEtqTeFyJxYNHGLPDnCDq0dXcdFB_Cw7NKmAaJGor6C-M2N-LHMuYFzd-C-VK-roC9NloL9JdZ5ND7XBfw4HByPOcXLEuhovcqLMk2Gc6vwtaR_b4" />
+          </div>
+          <div className="text-xs">
+            <p className="text-[#03045e] font-semibold">Mascot Helper</p>
+            <p className="text-[#0077b6]/60">Ready to help</p>
+          </div>
+        </div>
+        <div className="relative">
+          <div
+            onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+            className="flex items-center justify-between p-2.5 bg-[#f8fafc] hover:bg-[#caf0f8]/30 border border-[#e2e8f0] rounded-xl cursor-pointer transition-all"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center text-white text-[13px] font-bold">
+                R
+              </div>
+              <span className="text-[13px] font-semibold text-[#03045e]">roseskin</span>
+            </div>
+            <ChevronsUpDown size={16} className={`text-[#666666] transition-transform duration-200 ${profileMenuOpen ? 'rotate-180' : ''}`} />
+          </div>
+
+          {/* Profile Dropdown Menu */}
+          {profileMenuOpen && (
+            <div className="absolute bottom-full left-0 mb-2 w-[240px] bg-white rounded-2xl shadow-[0px_4px_40px_0px_rgba(3,4,94,0.12)] border border-[#e2e8f0] py-2 z-[100]">
+              {/* Account */}
+              <p className="px-4 pt-2 pb-1 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-wider">Account</p>
+              <button
+                onClick={() => { setProfileMenuOpen(false); setSettingsOpen(true); }}
+                className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer"
+              >
+                <Settings size={16} strokeWidth={1.8} className="text-[#03045e]" />
+                <span className="text-[14px] font-medium text-[#03045e]">Settings</span>
+              </button>
+
+              {/* Support */}
+              <div className="border-t border-[#e2e8f0] my-1" />
+              <p className="px-4 pt-2 pb-1 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-wider">Support</p>
+              <button className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer">
+                <CircleHelp size={16} strokeWidth={1.8} className="text-[#03045e]" />
+                <span className="text-[14px] font-medium text-[#03045e]">Help Center</span>
+              </button>
+
+              {/* Recent accounts */}
+              <div className="border-t border-[#e2e8f0] my-1" />
+              <p className="px-4 pt-2 pb-1 text-[11px] font-semibold text-[#0077b6]/60 uppercase tracking-wider">Recent accounts</p>
+              <button className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer">
+                <div className="w-5 h-5 rounded-full bg-[#caf0f8] flex items-center justify-center shrink-0">
+                  <span className="text-[10px] font-bold text-[#0077b6]">A</span>
+                </div>
+                <span className="text-[14px] font-medium text-[#03045e]">ai products</span>
+              </button>
+              <button className="flex items-center gap-2.5 w-full px-4 py-2 hover:bg-[#caf0f8]/30 transition-colors cursor-pointer">
+                <Globe size={16} strokeWidth={1.8} className="text-[#0077b6]" />
+                <span className="text-[14px] font-medium text-[#03045e]">Add new</span>
+              </button>
+
+              {/* Current user footer */}
+              <div className="border-t border-[#e2e8f0] mt-1" />
+              <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center shrink-0">
+                    <span className="text-[13px] font-bold text-white">R</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-medium text-[#03045e]">roseskin</span>
+                    <span className="text-[11px] text-[#666666] truncate max-w-[120px]">crystalskinco@gmail...</span>
+                  </div>
+                </div>
+                <button className="w-6 h-6 flex items-center justify-center hover:bg-[#caf0f8]/40 rounded-md transition-colors cursor-pointer">
+                  <Copy size={14} className="text-[#666666]" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 }
