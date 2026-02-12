@@ -277,7 +277,7 @@ export default function DashboardPage() {
                     <div key={item.name} className="rounded-[20px] transition-all cursor-pointer hover:opacity-90">
                       <div
                         className="relative py-3.5 pr-4 transition-all bg-white h-[84px] flex flex-row justify-start items-center overflow-hidden rounded-[20px] bg-cover"
-                        style={{ backgroundImage: `url(${item.bg})`, boxShadow: "rgba(232, 232, 232, 0.376) 0px 0px 4px 1px inset" }}
+                        style={{ /* backgroundImage: `url(${item.bg})`, */ boxShadow: "rgba(232, 232, 232, 0.376) 0px 0px 4px 1px inset" }}
                       >
                         <div className="pl-[38%]">
                           <h3 className="text-[16px] font-bold text-[#03045e] mb-0">{item.name}</h3>
@@ -298,7 +298,7 @@ export default function DashboardPage() {
                     <div key={item.name} className="rounded-[20px] transition-all cursor-pointer h-full hover:opacity-90">
                       <div
                         className="relative p-5 transition-all bg-white overflow-hidden flex flex-col h-[200px] rounded-[20px] bg-cover bg-center"
-                        style={{ backgroundImage: `url(${item.bg})`, boxShadow: "rgba(232, 232, 232, 0.376) 0px 0px 4px 1px inset" }}
+                        style={{ /* backgroundImage: `url(${item.bg})`, */ boxShadow: "rgba(232, 232, 232, 0.376) 0px 0px 4px 1px inset" }}
                       >
                         <div className="flex flex-col justify-between h-full">
                           <div>
