@@ -13,6 +13,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title>Adona AI - Marketing for Ads, Socials Posts and Emails</title>
+        <meta name="description" content="Adona AI - Marketing for Ads, Socials Posts and Emails" />
+        <link rel="icon" href="/icon.png" sizes="any" />
+        <link rel="apple-touch-icon" href="/icon.png" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
       </head>
