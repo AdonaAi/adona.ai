@@ -276,7 +276,7 @@ const PricingPage = () => {
                 <div className="w-full md:w-auto">
                   <div className="flex flex-col items-start mb-4">
                     <Image
-                      src="/images/black logo logo no bg adona.ai  2.png"
+                      src="/images/black-logo.png"
                       width={60}
                       height={60}
                       alt="adona.ai logo"
