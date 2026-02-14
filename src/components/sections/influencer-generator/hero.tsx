@@ -116,31 +116,30 @@ export default function InfluencerHero() {
       {/* Trust Badges Section */}
       <div className="relative z-20 mt-8 flex items-center justify-center w-full px-4">
         {/* Customer Rating Badge */}
-        <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-[#E6E6E6] shadow-sm">
-          <div className="flex -space-x-2">
+        <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-5 py-2.5 rounded-full border border-[#E6E6E6] shadow-sm">
+          <div className="flex -space-x-2.5">
             {[
-              'hF944J2HOWaKmZLpMGbhJD8cIw.jpeg',
-              'CDSoRipaV9Hpq0zdDkZvdZ5lQe8.png',
-              'VKINDhjTjVV27N30RcsciHrTtzw.png',
-              'dc8xaTir25CSGKnsIOaEcqnyqI.png'
-            ].map((img, i) => (
-              <div key={i} className="h-7 w-7 rounded-full border-2 border-white overflow-hidden">
+              "hF944J2HOWaKmZLpMGbhJD8cIw.jpeg",
+              "CDSoRipaV9Hpq0zdDkZvdZ5lQe8.png",
+              "VKINDhjTjVV27N30RcsciHrTtzw.png",
+              "dc8xaTir25CSGKnsIOaEcqnyqI.png"
+            ].map((img, index) => (
+              <div key={index} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden flex-shrink-0" style={{ zIndex: 4 - index }}>
                 <Image
                   src={`https://framerusercontent.com/images/${img}?width=400&height=400`}
-                  alt="Customer"
-                  width={28}
-                  height={28}
-                  className="w-full h-full object-cover"
+                  alt={`Customer ${index + 1}`}
+                  fill
+                  className="object-cover"
                 />
               </div>
             ))}
           </div>
-          <p className="text-[13px] font-medium text-[#1D1D1F]">
-            <span className="font-bold">4.9</span>/5 from <span className="font-bold">4268</span> customers
-          </p>
-          <svg width="18" height="18" viewBox="0 0 21 21" fill="none">
-            <path d="M12.315 1.517L14.162 5.243C14.414 5.762 15.086 6.259 15.653 6.354L19.003 6.915C21.144 7.275 21.648 8.842 20.105 10.388L17.501 13.012C17.06 13.456 16.818 14.314 16.955 14.928L17.7 18.178C18.288 20.75 16.934 21.745 14.676 20.4L11.537 18.527C10.97 18.188 10.036 18.188 9.458 18.527L6.319 20.4C4.072 21.745 2.708 20.739 3.295 18.178L4.041 14.928C4.177 14.314 3.936 13.456 3.495 13.012L0.891 10.387C-0.642 8.841 -0.148 7.274 1.994 6.914L5.343 6.354C5.899 6.258 6.571 5.761 6.823 5.242L8.671 1.517C9.679 -0.506 11.317 -0.506 12.315 1.517Z" fill="#FEDF70"/>
-          </svg>
+          <div className="flex items-center gap-1.5 text-[13px] font-sans text-[#1D1D1F] whitespace-nowrap">
+            <strong className="font-bold">3742+</strong>
+            <span className="text-[#666666] mx-1">marketers love Adona Ai</span>
+            <span className="text-[#666666] mx-2">|</span>
+            <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
+          </div>
         </div>
       </div>
     </section>

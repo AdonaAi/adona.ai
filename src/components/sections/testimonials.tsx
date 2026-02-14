@@ -67,29 +67,31 @@ const Testimonials = () => {
 
         {/* Floating CTA Pill */}
         <div className="mt-8 relative z-30">
-          <button className="bg-[#F2F2F2] pl-2 pr-5 py-2 rounded-full flex items-center gap-4 hover:scale-105 transition-transform duration-300">
-            <div className="flex -space-x-3">
+          <div className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft">
+            <div className="flex -space-x-2.5">
               {[
-                'https://framerusercontent.com/images/hF944J2HOWaKmZLpMGbhJD8cIw.jpeg',
-                'https://framerusercontent.com/images/CDSoRipaV9Hpq0zdDkZvdZ5lQe8.png',
-                'https://framerusercontent.com/images/VKINDhjTjVV27N30RcsciHrTtzw.png',
-                'https://framerusercontent.com/images/dc8xaTir25CSGKnsIOaEcqnyqI.png'
-              ].map((src, i) => (
-                <div key={i} className="w-9 h-9 rounded-full border-2 border-[#F2F2F2] overflow-hidden relative shadow-sm">
-                  <Image src={src} alt="User" fill className="object-cover" unoptimized />
+                "https://framerusercontent.com/images/hF944J2HOWaKmZLpMGbhJD8cIw.jpeg",
+                "https://framerusercontent.com/images/CDSoRipaV9Hpq0zdDkZvdZ5lQe8.png",
+                "https://framerusercontent.com/images/VKINDhjTjVV27N30RcsciHrTtzw.png",
+                "https://framerusercontent.com/images/dc8xaTir25CSGKnsIOaEcqnyqI.png"
+              ].map((src, index) => (
+                <div key={index} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden flex-shrink-0" style={{ zIndex: 4 - index }}>
+                  <Image
+                    src={src}
+                    alt={`Customer ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
               ))}
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-[15px] font-semibold text-[#1d1d1f]">
-                <span className="font-bold">4268+</span> founders love adona.ai
-              </span>
-              <div className="w-px h-4 bg-gray-300"></div>
-              <span className="text-[14px] font-medium text-[#1d1d1f] flex items-center gap-1">
-                View more <Plus className="w-4 h-4 bg-black text-white rounded-full p-0.5" />
-              </span>
+            <div className="flex items-center gap-1.5 text-[13px] md:text-sm font-sans text-black whitespace-nowrap">
+              <strong className="font-bold">3742+</strong>
+              <span className="text-[#636363]">marketers love Adona Ai</span>
+              <span className="text-[#636363] mx-2">|</span>
+              <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
             </div>
-          </button>
+          </div>
         </div>
 
       </div>

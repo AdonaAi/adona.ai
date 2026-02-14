@@ -14,23 +14,24 @@ const SocialProofBar = () => {
     <div className="flex flex-col items-center gap-8 py-12">
 
       {/* Trust Rating Bar */}
-      <div className="flex items-center gap-4 px-6 py-2 border border-[#F1F1F1] rounded-full bg-white shadow-soft">
-        <div className="flex -space-x-2">
-          {avatars.map((src, i) => (
-            <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-[#F3F4F6]">
-              <img src={src} alt={`Customer ${i + 1}`} className="w-full h-full object-cover" />
+      <div className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft">
+        <div className="flex -space-x-2.5">
+          {avatars.map((src, index) => (
+            <div key={index} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden flex-shrink-0" style={{ zIndex: avatars.length - index }}>
+              <Image
+                src={src}
+                alt={`Customer ${index + 1}`}
+                fill
+                className="object-cover"
+              />
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-2">
-          <p className="text-[14px] leading-none text-[#1A1A1A]">
-            <span className="font-bold">4.9</span>/5 from <span className="font-bold">4268</span> customers
-          </p>
-          <div className="flex text-[#FFC107]">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-            </svg>
-          </div>
+        <div className="flex items-center gap-1.5 text-[13px] md:text-sm font-sans text-black whitespace-nowrap">
+          <strong className="font-bold">3742+</strong>
+          <span className="text-[#636363]">marketers love Adona Ai</span>
+          <span className="text-[#636363] mx-2">|</span>
+          <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
         </div>
       </div>
     </div>

@@ -175,10 +175,10 @@ const PricingPage = () => {
         className="fixed top-0 left-0 right-0 z-50 h-[50px] flex items-center justify-center text-white font-medium shadow-md"
         style={{
           background: 'linear-gradient(90deg, #03045e 0%, #0077b6 50%, #00b4d8 100%)',
-          fontFamily: 'Satoshi, sans-serif'
+          fontFamily: '"Caveat", cursive',
         }}
       >
-        <div className="flex items-center gap-2 text-[14px] md:text-[16px]">
+        <div className="flex items-center gap-2 text-[22px] md:text-[24px] tracking-wide">
           <span><strong>New Years Sale 50% OFF</strong></span>
           <span className="opacity-80">|</span>
           <span className="font-bold font-mono tracking-widest">
@@ -501,8 +501,8 @@ const PricingPage = () => {
         {/* Works with your stack */}
         <section className="max-w-[650px] mx-auto px-5 py-10">
           <div className="bg-white rounded-[24px] border border-[#e5e5e7] shadow-sm p-8 text-center">
-            <h3 className="text-[24px] md:text-[28px] font-bold text-[#1d1d1f] mb-3">Works seamlessly with your stack.</h3>
-            <p className="text-[16px] text-[#6e6e73] mb-8">Meta, Instagram, Klaviyo, Mailchimp and more.</p>
+            <h3 className="text-[24px] md:text-[28px] font-bold text-[#1d1d1f] mb-3">Works with the Tools You Already Use.</h3>
+            <p className="text-[16px] text-[#6e6e73] mb-8">No setup headaches. No switching platforms.</p>
             <div className="w-full overflow-hidden rounded-xl">
               <Image
                 src="/images/WhatsApp%20Image%202026-02-02%20at%2000.19.26.jpeg?v=2"
@@ -577,7 +577,7 @@ const PricingPage = () => {
               className="h-[200px]"
               unoptimized
             />
-            <p className="text-[13px] text-[#86868b]">© 2026 adona.ai. All rights reserved.</p>
+            <p className="text-[13px] text-[#86868b]">© 2026 Adona Ai. All rights reserved.</p>
           </div>
           <div className="flex items-center gap-6">
             <Link href="/terms-of-service" className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors">Terms</Link>
@@ -665,11 +665,21 @@ const PricingPage = () => {
 
               {/* Footer Text */}
               <div className="flex items-center justify-center gap-2 text-[13px] text-[#6e6e73]">
-                <span>Subscription covers your whole team</span>
-                <div className="w-4 h-4 bg-[#10b981] rounded-[4px] flex items-center justify-center text-white">
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+                <span>Create Up to 300 Creatives per Month</span>
+                <div className="group relative">
+                  <div className="w-4 h-4 rounded-full border border-[#6e6e73] flex items-center justify-center text-[#6e6e73] cursor-help">
+                    <span className="text-[10px] font-bold">?</span>
+                  </div>
+
+                  {/* Tooltip / Popover */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 text-left pointer-events-none">
+                    <h4 className="font-bold text-[#1d1d1f] mb-2 text-[14px]">Plan details</h4>
+                    <p className="text-[13px] text-[#6e6e73] leading-relaxed">
+                      Includes 200 monthly credits plus 10 daily bonus credits. Upgrade to a higher plan or top up anytime as your needs grow.
+                    </p>
+                    {/* Arrow */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-8 border-transparent border-t-white"></div>
+                  </div>
                 </div>
               </div>
             </div>

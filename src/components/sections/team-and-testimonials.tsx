@@ -62,7 +62,7 @@ export default function TeamAndTestimonials() {
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           <div className="flex flex-col gap-4 w-full lg:w-1/3">
             {TEAM_MEMBERS.map((member, index) => (
-              <div 
+              <div
                 key={index}
                 className="bg-white border border-[#E5E7EB] rounded-[24px] p-6 flex items-center justify-between shadow-ambient hover:shadow-md transition-shadow group"
               >
@@ -203,26 +203,25 @@ export default function TeamAndTestimonials() {
 
         {/* Footer info bar */}
         <div className="mt-16 flex justify-center">
-          <div className="bg-secondary/50 border border-border backdrop-blur-sm rounded-full px-6 py-2 flex items-center gap-4">
-            <div className="flex -space-x-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft">
+            <div className="flex -space-x-2.5">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-6 h-6 rounded-full border-2 border-white overflow-hidden relative">
-                  <Image 
-                    src={`https://framerusercontent.com/images/${i === 1 ? 'hF944J2HOWaKmZLpMGbhJD8cIw' : i === 2 ? 'CDSoRipaV9Hpq0zdDkZvdZ5lQe8' : i === 3 ? 'VKINDhjTjVV27N30RcsciHrTtzw' : 'dc8xaTir25CSGKnsIOaEcqnyqI'}.png?width=100`} 
-                    alt="Reviewer" 
-                    fill 
+                <div key={i} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden flex-shrink-0" style={{ zIndex: 4 - i }}>
+                  <Image
+                    src={`https://framerusercontent.com/images/${i === 1 ? 'hF944J2HOWaKmZLpMGbhJD8cIw' : i === 2 ? 'CDSoRipaV9Hpq0zdDkZvdZ5lQe8' : i === 3 ? 'VKINDhjTjVV27N30RcsciHrTtzw' : 'dc8xaTir25CSGKnsIOaEcqnyqI'}.png?width=100`}
+                    alt="Reviewer"
+                    fill
+                    className="object-cover"
                   />
                 </div>
               ))}
             </div>
-            <span className="text-[14px] font-medium text-[#1A1A1A]">
-              <strong className="font-bold">4268+</strong> founders love adona.ai
-            </span>
-            <div className="h-4 w-[1px] bg-border mx-2"></div>
-            <button className="flex items-center gap-1 text-[14px] font-semibold text-[#1A1A1A] hover:opacity-70 transition-opacity">
-              View more
-              <Plus className="w-4 h-4 bg-[#1A1A1A] text-white rounded-full p-[1px]" />
-            </button>
+            <div className="flex items-center gap-1.5 text-[13px] md:text-sm font-sans text-black whitespace-nowrap">
+              <strong className="font-bold">3742+</strong>
+              <span className="text-[#636363]">marketers love Adona Ai</span>
+              <span className="text-[#636363] mx-2">|</span>
+              <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
+            </div>
           </div>
         </div>
       </section>

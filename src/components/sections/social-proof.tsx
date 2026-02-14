@@ -12,19 +12,13 @@ const SocialProof = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full pt-10 pb-16">
       {/* Floating Trust Badge */}
-      <div 
-        className="inline-flex items-center gap-2.5 px-4 py-2 bg-white border border-[#E5E7EB] rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-transform hover:scale-[1.02] cursor-default"
-      >
-        {/* Avatar Group */}
+      <div className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft">
         <div className="flex -space-x-2.5">
           {avatars.map((src, index) => (
-            <div 
-              key={index} 
-              className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-gray-100"
-            >
+            <div key={index} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden flex-shrink-0" style={{ zIndex: 4 - index }}>
               <Image
                 src={src}
-                alt={`Customer avatar ${index + 1}`}
+                alt={`Customer ${index + 1}`}
                 width={32}
                 height={32}
                 className="object-cover w-full h-full"
@@ -32,25 +26,11 @@ const SocialProof = () => {
             </div>
           ))}
         </div>
-
-        {/* Rating Text */}
-        <div className="flex items-center gap-1.5 ml-1">
-          <p className="text-[14px] font-medium text-[#1A1A1A] leading-none">
-            <span className="font-bold">4.9</span>/5 from <span className="font-bold">4268</span> customers
-          </p>
-          
-          {/* Gold Star */}
-          <div className="flex items-center">
-            <svg 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="#FFD700" 
-              className="drop-shadow-sm"
-            >
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-            </svg>
-          </div>
+        <div className="flex items-center gap-1.5 text-[13px] md:text-sm font-sans text-black whitespace-nowrap">
+          <strong className="font-bold">3742+</strong>
+          <span className="text-[#636363]">marketers love Adona Ai</span>
+          <span className="text-[#636363] mx-2">|</span>
+          <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
         </div>
       </div>
     </div>

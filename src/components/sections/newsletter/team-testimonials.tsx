@@ -41,10 +41,10 @@ const testimonials = [
     screenshot: 'https://framerusercontent.com/images/Fz6qv5QZmds6Qh39sMvSXt9Ol8.png?width=290&height=460',
     location: 'US - Mar 4, 2025',
     subTestimonial: {
-        author: 'Jonas Bertasius',
-        avatar: 'https://framerusercontent.com/images/dc8xaTir25CSGKnsIOaEcqnyqI.png?width=400&height=400',
-        content: 'Posting is simple now Social media posts used to take me HOURS. Now it\'s like 10 minutes a day. crazy.',
-        location: 'LT - Mar 11, 2025'
+      author: 'Jonas Bertasius',
+      avatar: 'https://framerusercontent.com/images/dc8xaTir25CSGKnsIOaEcqnyqI.png?width=400&height=400',
+      content: 'Posting is simple now Social media posts used to take me HOURS. Now it\'s like 10 minutes a day. crazy.',
+      location: 'LT - Mar 11, 2025'
     }
   },
   {
@@ -65,8 +65,8 @@ const TeamTestimonials = () => {
           {/* Vertical Member List */}
           <div className="flex flex-col gap-3 w-full lg:w-[420px]">
             {teamMembers.map((member, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className="bg-white border border-[#f2f2f2] rounded-[24px] p-4 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.02)]"
               >
                 <div className="flex flex-col">
@@ -74,11 +74,11 @@ const TeamTestimonials = () => {
                   <span className="text-[14px] text-[#666666]">{member.role}</span>
                 </div>
                 <div className="w-[64px] h-[64px] rounded-full overflow-hidden border border-[#f2f2f2]">
-                  <Image 
-                    src={member.image} 
-                    alt={member.name} 
-                    width={64} 
-                    height={64} 
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    width={64}
+                    height={64}
                     className="object-cover w-full h-full"
                   />
                 </div>
@@ -103,33 +103,33 @@ const TeamTestimonials = () => {
         {/* Foundered Testimonials Section */}
         <div className="text-center mb-16">
           <h2 className="text-[48px] font-bold text-[#1a1a1a] tracking-tight mb-12">Used by founders who move fast</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {testimonials.map((t, idx) => (
               <div key={idx} className="flex flex-col gap-6">
                 <div className="bg-white border border-[#f2f2f2] rounded-[28px] p-6 text-left shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col h-full">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
-                        <Image src={t.avatar} width={40} height={40} alt={t.author} className="object-cover" />
+                      <Image src={t.avatar} width={40} height={40} alt={t.author} className="object-cover" />
                     </div>
                     <div className="flex items-center gap-1">
-                        <span className="font-semibold text-[#1a1a1a] text-[15px]">{t.author}</span>
-                        {t.verified && (
-                            <svg viewBox="0 0 24 24" className="w-[16px] h-[16px] text-[#2F80ED]" fill="currentColor">
-                                <path d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.27.4-2.73-.39-3.85-1.12-1.12-2.58-1.26-3.85-.39-1.01-1.3-2.38-2.18-3.66-2.18-1.58 0-2.95.88-3.66 2.18-1.27-.54-2.73-.4-3.85.39-1.12 1.12-1.26 2.58-.39 3.85-1.3 1.01-2.18 2.38-2.18 3.66 0 1.58.88 2.95 2.18 3.66-.54 1.27-.4 2.73.39 3.85 1.12 1.12 2.58 1.26 3.85.39 1.01 1.3 2.38 2.18 3.66 2.18 1.58 0 2.95-.88 3.66-2.18 1.27.54 2.73.4 3.85-.39 1.12-1.12 1.26-2.58.39-3.85 1.3-1.01 2.18-2.38 2.18-3.66zM10.4 17l-4.7-4.7 1.4-1.4 3.3 3.3 6.7-6.7 1.4 1.4L10.4 17z" />
-                            </svg>
-                        )}
+                      <span className="font-semibold text-[#1a1a1a] text-[15px]">{t.author}</span>
+                      {t.verified && (
+                        <svg viewBox="0 0 24 24" className="w-[16px] h-[16px] text-[#2F80ED]" fill="currentColor">
+                          <path d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.66.54-1.27.4-2.73-.39-3.85-1.12-1.12-2.58-1.26-3.85-.39-1.01-1.3-2.38-2.18-3.66-2.18-1.58 0-2.95.88-3.66 2.18-1.27-.54-2.73-.4-3.85.39-1.12 1.12-1.26 2.58-.39 3.85-1.3 1.01-2.18 2.38-2.18 3.66 0 1.58.88 2.95 2.18 3.66-.54 1.27-.4 2.73.39 3.85 1.12 1.12 2.58 1.26 3.85.39 1.01 1.3 2.38 2.18 3.66 2.18 1.58 0 2.95-.88 3.66-2.18 1.27.54 2.73.4 3.85-.39 1.12-1.12 1.26-2.58.39-3.85 1.3-1.01 2.18-2.38 2.18-3.66zM10.4 17l-4.7-4.7 1.4-1.4 3.3 3.3 6.7-6.7 1.4 1.4L10.4 17z" />
+                        </svg>
+                      )}
                     </div>
                   </div>
                   <p className="text-[#666666] text-[15px] leading-[1.6] mb-6 whitespace-pre-wrap">{t.content}</p>
-                  
+
                   {t.screenshot && (
                     <div className="w-full relative mt-auto rounded-xl overflow-hidden mb-6 border border-[#f2f2f2]">
-                      <Image 
-                        src={t.screenshot} 
-                        alt="Testimonial proof" 
-                        width={400} 
-                        height={500} 
+                      <Image
+                        src={t.screenshot}
+                        alt="Testimonial proof"
+                        width={400}
+                        height={500}
                         className="w-full object-cover"
                       />
                     </div>
@@ -142,37 +142,46 @@ const TeamTestimonials = () => {
 
                 {/* Optional nested mini-testimonial */}
                 {t.subTestimonial && (
-                    <div className="bg-white border border-[#f2f2f2] rounded-[24px] p-5 text-left shadow-[0_4px_15px_rgba(0,0,0,0.02)]">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
-                                <Image src={t.subTestimonial.avatar} width={32} height={32} alt={t.subTestimonial.author} className="object-cover" />
-                            </div>
-                            <span className="font-semibold text-[#1a1a1a] text-[14px]">{t.subTestimonial.author}</span>
-                        </div>
-                        <p className="text-[#666666] text-[14px] leading-[1.5] mb-3">{t.subTestimonial.content}</p>
-                        <span className="text-[11px] text-[#999999]">{t.subTestimonial.location}</span>
+                  <div className="bg-white border border-[#f2f2f2] rounded-[24px] p-5 text-left shadow-[0_4px_15px_rgba(0,0,0,0.02)]">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
+                        <Image src={t.subTestimonial.avatar} width={32} height={32} alt={t.subTestimonial.author} className="object-cover" />
+                      </div>
+                      <span className="font-semibold text-[#1a1a1a] text-[14px]">{t.subTestimonial.author}</span>
                     </div>
+                    <p className="text-[#666666] text-[14px] leading-[1.5] mb-3">{t.subTestimonial.content}</p>
+                    <span className="text-[11px] text-[#999999]">{t.subTestimonial.location}</span>
+                  </div>
                 )}
               </div>
             ))}
           </div>
 
           <div className="mt-16 flex items-center justify-center gap-8">
-            <div className="flex items-center border border-[#f2f2f2] rounded-full px-5 py-2.5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] bg-white gap-3">
-              <div className="flex -space-x-2">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="w-[28px] h-[28px] rounded-full border-2 border-white overflow-hidden bg-gray-100">
-                     <Image src={teamMembers[i%4].image} width={28} height={28} alt="User" />
+            <div className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft">
+              <div className="flex -space-x-2.5">
+                {[
+                  "https://framerusercontent.com/images/hF944J2HOWaKmZLpMGbhJD8cIw.jpeg",
+                  "https://framerusercontent.com/images/CDSoRipaV9Hpq0zdDkZvdZ5lQe8.png",
+                  "https://framerusercontent.com/images/VKINDhjTjVV27N30RcsciHrTtzw.png",
+                  "https://framerusercontent.com/images/dc8xaTir25CSGKnsIOaEcqnyqI.png"
+                ].map((src, index) => (
+                  <div key={index} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden flex-shrink-0" style={{ zIndex: 4 - index }}>
+                    <Image
+                      src={src}
+                      alt={`Customer ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                 ))}
               </div>
-              <div className="text-[14px] font-medium text-[#1a1a1a]">
-                <span className="font-bold">4268+</span> founders love adona.ai
+              <div className="flex items-center gap-1.5 text-[13px] md:text-sm font-sans text-black whitespace-nowrap">
+                <strong className="font-bold">3742+</strong>
+                <span className="text-[#636363]">marketers love Adona Ai</span>
+                <span className="text-[#636363] mx-2">|</span>
+                <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
               </div>
-              <div className="w-[1px] h-4 bg-[#f2f2f2] mx-2" />
-              <button className="flex items-center gap-2 text-[14px] font-semibold text-[#1a1a1a]">
-                View more <Plus className="w-4 h-4 p-0.5 bg-[#1a1a1a] text-white rounded-full" />
-              </button>
             </div>
           </div>
         </div>

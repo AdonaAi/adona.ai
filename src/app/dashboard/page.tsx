@@ -71,7 +71,7 @@ export default function DashboardPage() {
 
               <div className="flex items-center gap-3 sm:gap-5 flex-1 justify-between sm:justify-center w-full sm:w-auto flex-wrap">
                 <span className="hidden lg:inline text-[16px] font-medium text-[#03045e] tracking-[0.02em]">
-                  adona.ai <span className="font-bold">improves</span> with every piece <span className="font-bold">created:</span>
+                  <span className="font-bold">Improve</span> with every piece <span className="font-bold">created:</span>
                 </span>
                 {/* Progress Bar */}
                 <div className="relative w-full sm:w-[225px] h-2.5 rounded-full border border-white flex-1 sm:flex-none">
@@ -342,9 +342,17 @@ export default function DashboardPage() {
 function SidebarContent({ setProfileMenuOpen, profileMenuOpen, setSettingsOpen }: any) {
   return (
     <>
-      <div className="p-6 pb-2">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-[18px] font-extrabold tracking-tight text-[#03045e]">adona.ai</span>
+      <div className="p-6 pb-2 relative z-20">
+        <Link href="/" className="relative block h-[45px]">
+          <Image
+            src="/video/logo.png"
+            alt="adona.ai"
+            width={300}
+            height={100}
+            className="object-contain h-[100px] w-auto absolute top-1/2 -translate-y-1/2 -left-3"
+            priority
+            unoptimized
+          />
         </Link>
       </div>
       <div className="px-3 pt-4 space-y-6 flex-1 text-left">

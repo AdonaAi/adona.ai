@@ -11,10 +11,7 @@ const TrustBar = () => {
 
   return (
     <div className="flex items-center justify-center py-2 md:py-4 px-4">
-      <div
-        className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft"
-      >
-        {/* Avatar Stack */}
+      <div className="flex flex-col sm:flex-row items-center gap-2 px-4 py-2 bg-white border border-[#f1f5f9] rounded-2xl sm:rounded-full shadow-soft">
         <div className="flex -space-x-2.5">
           {avatars.map((src, index) => (
             <div
@@ -31,30 +28,11 @@ const TrustBar = () => {
             </div>
           ))}
         </div>
-
-        {/* Rating Text */}
         <div className="flex items-center gap-1.5 text-[13px] md:text-sm font-sans text-black whitespace-nowrap">
-          <span className="flex items-center">
-            <strong className="font-bold">4.9</strong>
-            <span className="text-[#636363] mx-px">/</span>
-            <span className="text-[#636363]">5 from</span>
-          </span>
-          <strong className="font-bold">4268</strong>
-          <span className="text-[#636363]">customers</span>
-
-          {/* Star Icon */}
-          <div className="ml-0.5 flex items-center justify-center">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="#F9D423"
-              className="w-4 h-4"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-            </svg>
-          </div>
+          <strong className="font-bold">3742+</strong>
+          <span className="text-[#636363]">marketers love Adona Ai</span>
+          <span className="text-[#636363] mx-2">|</span>
+          <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
         </div>
       </div>
     </div>

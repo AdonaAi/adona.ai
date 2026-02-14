@@ -51,7 +51,7 @@ export default function SocialProofCarousel() {
       <div className="container mx-auto px-6">
         {/* Customer Rating Bar */}
         <div className="flex flex-col items-center mb-20">
-          <div 
+          <div
             className="flex items-center gap-3 bg-white border border-[#EDEDED] rounded-full py-1.5 px-4 shadow-[0_4px_12px_rgba(0,0,0,0.03)]"
             style={{ width: "fit-content" }}
           >
@@ -70,9 +70,10 @@ export default function SocialProofCarousel() {
               ))}
             </div>
             <div className="text-[14px] font-medium tracking-tight text-[#000000]">
-              <span className="font-bold">4.9</span>/5 from{" "}
-              <span className="font-bold">4268</span> customers
-              <span className="ml-1 text-[#f1c40f]">⭐</span>
+              <strong className="font-bold">3742+</strong>
+              <span className="text-[#636363] mx-1">marketers love Adona Ai</span>
+              <span className="text-[#636363] mx-2">|</span>
+              <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
             </div>
           </div>
 

@@ -18,8 +18,8 @@ const SocialProofBanner = () => {
         {/* Avatars Overlap */}
         <div className="flex -space-x-2.5">
           {avatars.map((avatar, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden"
             >
               <Image
@@ -33,18 +33,12 @@ const SocialProofBanner = () => {
         </div>
 
         {/* Rating Text */}
-        <div className="flex items-center gap-2">
-          <p className="text-[15px] font-medium text-[#121212] font-sans">
-            <span className="font-bold">4.9</span>/5 from <span className="font-bold">4268</span> customers
-          </p>
-          <div className="flex items-center">
-             <svg 
-              viewBox="0 0 24 24" 
-              className="w-4 h-4 text-[#f1c40f] fill-current"
-            >
-              <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
-            </svg>
-          </div>
+        {/* Updated Text Content */}
+        <div className="flex items-center gap-1.5 text-[13px] md:text-sm font-sans text-black whitespace-nowrap">
+          <strong className="font-bold">3742+</strong>
+          <span className="text-[#636363]">marketers love Adona Ai</span>
+          <span className="text-[#636363] mx-2">|</span>
+          <a href="#reviews" className="text-[#0077b6] font-medium hover:underline">View More</a>
         </div>
       </div>
     </div>

@@ -31,8 +31,8 @@ const Footer = () => {
           {/* Left: Contact Info */}
           <div className="lg:col-span-4">
             <div className="mb-1">
-              <a 
-                href="mailto:support@adona.ai" 
+              <a
+                href="mailto:support@adona.ai"
                 className="text-[24px] font-bold text-[#1A1A1A] hover:text-[#8e8ffa] transition-colors"
                 style={{ letterSpacing: '-0.02em' }}
               >
@@ -81,14 +81,14 @@ const Footer = () => {
           <div className="lg:col-span-3 lg:text-right flex flex-col items-start lg:items-end justify-between">
             <div className="space-y-6 w-full flex flex-col items-start lg:items-end">
               <p className="text-[16px] font-semibold text-[#1A1A1A]">Want a mystery gift ?</p>
-              <button 
+              <button
                 className="bg-holo-gradient text-white rounded-full px-6 py-2.5 font-bold text-[14px] hover:scale-105 transition-transform"
                 style={{ boxShadow: '0 4px 15px rgba(239, 93, 168, 0.2)' }}
               >
                 Yes please
               </button>
             </div>
-            
+
             <div className="mt-12 lg:mt-0 space-y-3">
               <a href="#" className="flex items-center lg:justify-end gap-2 text-[14px] font-semibold text-[#1A1A1A] group">
                 Instagram <ArrowRight size={14} className="rotate-[-45deg] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -102,10 +102,10 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-20 pt-8 border-t border-[#F2F2F2] flex flex-col md:flex-row items-center justify-between text-[#666666]">
-          <p className="text-[12px]">© 2025 All Rights Reserved</p>
+          <p className="text-[12px]">© 2026 Adona Ai. All rights reserved.</p>
           <div className="mt-4 md:mt-0">
             <div className="px-4 py-2 bg-white rounded-full border border-gray-100 shadow-sm flex items-center justify-center">
-              <Image 
+              <Image
                 src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/4cdbd617-1711-439d-a5f5-7af24b9a4f0b/WhatsApp-Image-2026-01-23-at-5.11.01-AM-1769699643506.png?width=8000&height=8000&resize=contain"
                 alt="Adona Logo"
                 width={100}

@@ -69,7 +69,7 @@ export default function AllInOneMarketingTabs() {
   const currentItems = carouselData[activeTab as keyof typeof carouselData] || carouselData['Videos'];
 
   return (
-    <section className="py-6 sm:py-8 md:py-10 lg:py-12 bg-background w-full overflow-hidden">
+    <section className="py-6 sm:py-8 md:py-10 lg:py-12 mt-16 md:mt-24 lg:mt-32 bg-background w-full overflow-hidden">
       <div className="container mx-auto px-6 sm:px-8 md:px-10">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-14 md:mb-16 space-y-4 sm:space-y-5">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-foreground max-w-4xl px-4 tracking-tight">
