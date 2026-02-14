@@ -280,7 +280,7 @@ const PricingPage = () => {
                       width={60}
                       height={60}
                       alt="adona.ai logo"
-                      className="relative h-[48px] w-[48px] md:h-[56px] md:w-[56px] lg:h-[64px] lg:w-[64px] rounded-2xl object-contain mb-3"
+                      className="w-auto h-[48px] md:h-[56px] lg:h-[64px] rounded-2xl object-contain mb-3"
                     />
                     <div className="flex items-baseline gap-2">
                       <span className="text-[14px] md:text-[16px] text-[#64748b] italic">Starting from</span>
