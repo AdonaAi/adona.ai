@@ -24,7 +24,6 @@ export default function AIAdGeneratorPage() {
       <Navbar />
       <main>
         <HeroSection />
-        <HowItWorks />
         <FBIntelligenceShowcase />
         <ContentIntelligenceStats />
         <GeneratedWith />

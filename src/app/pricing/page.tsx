@@ -386,7 +386,7 @@ const PricingPage = () => {
             </div>
             <div className="w-full md:w-[280px] lg:w-[320px] h-[180px] md:h-[200px] rounded-[16px] md:rounded-[20px] overflow-hidden">
               <Image
-                src="/images/image.png"
+                src="/images/image copy.png"
                 alt="AI Robot"
                 width={320}
                 height={200}
