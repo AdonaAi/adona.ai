@@ -27,9 +27,9 @@ export default function Hero() {
           </div>
         </div>
 
-        <h1 className="mb-6 sm:mb-7 md:mb-8 text-[32px] xs:text-[38px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-[900] leading-[1.1] tracking-[-0.02em] font-display text-[#03045e] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 max-w-[1000px] mx-auto px-2 sm:px-4 md:px-0">
+        <h1 className="mb-6 sm:mb-7 md:mb-8 text-[24px] xs:text-[28px] sm:text-[36px] md:text-[48px] lg:text-[56px] font-[900] leading-[1.1] tracking-[-0.02em] font-display text-[#03045e] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 max-w-[1000px] mx-auto px-2 sm:px-4 md:px-0">
           Multiply Your Content with AI-Powered
-          <span className="block mt-1 sm:mt-2 text-[#0077b6] lg:text-[84px]">Conversion Driven Creatives.</span>
+          <span className="block mt-1 sm:mt-2 text-[#0077b6] lg:text-[60px]">Conversion Driven Creatives.</span>
         </h1>
 
         {/* Sub-headline */}
