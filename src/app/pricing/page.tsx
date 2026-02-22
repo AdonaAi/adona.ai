@@ -679,13 +679,13 @@ const PricingPage = () => {
                   </button>
 
                   {/* Tooltip / Popover */}
-                  <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-white rounded-xl shadow-xl border border-gray-100 transition-all duration-200 z-50 text-left pointer-events-none ${showTooltip ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+                  <div className={`absolute bottom-full right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 mb-2 w-56 sm:w-64 p-3 sm:p-4 bg-white rounded-xl shadow-xl border border-gray-100 transition-all duration-200 z-50 text-left pointer-events-none ${showTooltip ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                     <h4 className="font-bold text-[#1d1d1f] mb-2 text-[14px]">Plan details</h4>
                     <p className="text-[13px] text-[#6e6e73] leading-relaxed">
                       Includes 200 monthly credits plus 10 daily bonus credits. Upgrade to a higher plan or top up anytime as your needs grow.
                     </p>
                     {/* Arrow */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-8 border-transparent border-t-white"></div>
+                    <div className="absolute top-full right-1 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 -mt-1 border-8 border-transparent border-t-white"></div>
                   </div>
                 </div>
               </div>
