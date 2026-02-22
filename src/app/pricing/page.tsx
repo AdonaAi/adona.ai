@@ -10,6 +10,7 @@ const PricingPage = () => {
   const [selectedPlan, setSelectedPlan] = useState<PlanType>('yearly');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showPricingModal, setShowPricingModal] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const scrollCarousel = (direction: 'left' | 'right') => {
@@ -666,13 +667,19 @@ const PricingPage = () => {
               {/* Footer Text */}
               <div className="flex items-center justify-center gap-2 text-[13px] text-[#6e6e73]">
                 <span>Create Up to 300 Creatives per Month</span>
-                <div className="group relative">
-                  <div className="w-4 h-4 rounded-full border border-[#6e6e73] flex items-center justify-center text-[#6e6e73] cursor-help">
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setShowTooltip(!showTooltip)}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    className="w-4 h-4 rounded-full border border-[#6e6e73] flex items-center justify-center text-[#6e6e73] cursor-help"
+                  >
                     <span className="text-[10px] font-bold">?</span>
-                  </div>
+                  </button>
 
                   {/* Tooltip / Popover */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 text-left pointer-events-none">
+                  <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-white rounded-xl shadow-xl border border-gray-100 transition-all duration-200 z-50 text-left pointer-events-none ${showTooltip ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                     <h4 className="font-bold text-[#1d1d1f] mb-2 text-[14px]">Plan details</h4>
                     <p className="text-[13px] text-[#6e6e73] leading-relaxed">
                       Includes 200 monthly credits plus 10 daily bonus credits. Upgrade to a higher plan or top up anytime as your needs grow.
