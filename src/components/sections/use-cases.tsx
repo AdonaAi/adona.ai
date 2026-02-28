@@ -51,7 +51,7 @@ const UseCaseCard: React.FC<UseCaseCardProps> = ({
 const Carousel3D: React.FC<{ videos: string[] }> = ({ videos }) => {
   const [rotation, setRotation] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const animate = () => {
@@ -204,23 +204,21 @@ const TabGroup: React.FC = () => {
             tabIndex={0}
           >
             <div className="px-6 py-3">
-              <p className={`text-[16px] font-medium transition-colors ${
-                activeTab === tab.name ? 'text-[#1a1a1a]' : 'text-[#666666]'
-              }`}>
+              <p className={`text-[16px] font-medium transition-colors ${activeTab === tab.name ? 'text-[#1a1a1a]' : 'text-[#666666]'
+                }`}>
                 {tab.name}
               </p>
             </div>
             <div
-              className={`h-[3px] w-full rounded-full transition-all ${
-                activeTab === tab.name ? '' : 'bg-[#dbdbdb]'
-              }`}
+              className={`h-[3px] w-full rounded-full transition-all ${activeTab === tab.name ? '' : 'bg-[#dbdbdb]'
+                }`}
               style={
                 activeTab === tab.name
                   ? {
-                      background:
-                        'radial-gradient(50% 50% at 50% 50%, rgb(62, 134, 198) 0%, rgb(166, 102, 170) 34.49%, rgb(236, 68, 146) 57.17%, rgb(238, 68, 84) 80.66%, rgb(240, 84, 39) 100%)',
-                      opacity: 1,
-                    }
+                    background:
+                      'radial-gradient(50% 50% at 50% 50%, rgb(62, 134, 198) 0%, rgb(166, 102, 170) 34.49%, rgb(236, 68, 146) 57.17%, rgb(238, 68, 84) 80.66%, rgb(240, 84, 39) 100%)',
+                    opacity: 1,
+                  }
                   : { opacity: 1 }
               }
             />
@@ -271,25 +269,25 @@ export default function UseCasesSection() {
             className="h-full"
           >
             <div className="relative h-[240px] w-full flex items-center justify-center">
-                {/* Floating star assets logic */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="grid grid-cols-3 gap-8 opacity-20 transform scale-150">
-                   {[1,2,3,4,5,6].map((i) => (
-                     <svg key={i} width="40" height="40" viewBox="0 0 24 24" fill="#a855f7" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z" />
-                     </svg>
-                   ))}
-                    </div>
+              {/* Floating star assets logic */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="grid grid-cols-3 gap-8 opacity-20 transform scale-150">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <svg key={i} width="40" height="40" viewBox="0 0 24 24" fill="#a855f7" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z" />
+                    </svg>
+                  ))}
                 </div>
-                <div className="z-10 bg-[#f9fafb] p-6 rounded-2xl border border-dashed border-[#e5e7eb]">
-                    <p className="italic text-[#1a1a1a] font-medium text-lg leading-snug">
-                        "I was skeptical output would be this good. It matches my brand perfectly."
-                    </p>
-                    <div className="mt-4 flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-candy" />
-                        <span className="text-sm font-semibold text-[#1a1a1a]">Verified Founder</span>
-                    </div>
+              </div>
+              <div className="z-10 bg-[#f9fafb] p-6 rounded-2xl border border-dashed border-[#e5e7eb]">
+                <p className="italic text-[#1a1a1a] font-medium text-lg leading-snug">
+                  "I was skeptical output would be this good. It matches my brand perfectly."
+                </p>
+                <div className="mt-4 flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-candy" />
+                  <span className="text-sm font-semibold text-[#1a1a1a]">Verified Founder</span>
                 </div>
+              </div>
             </div>
           </UseCaseCard>
 
@@ -300,19 +298,19 @@ export default function UseCasesSection() {
             className="h-full"
           >
             <div className="relative aspect-video w-full rounded-2xl bg-[#f9fafb] flex items-center justify-center p-8">
-               <div className="grid grid-cols-4 gap-4">
-                  {[1,2,3,4,5,6,7,8].map((i) => (
-                    <div key={i} className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm">
-                      <Image 
-                        src={`https://framerusercontent.com/images/dc8xaTir25CSGKnsIOaEcqnyqI.png?width=400&height=400`} 
-                        alt="Product icon"
-                        width={48}
-                        height={48}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-               </div>
+              <div className="grid grid-cols-4 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                  <div key={i} className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm">
+                    <Image
+                      src={`https://framerusercontent.com/images/dc8xaTir25CSGKnsIOaEcqnyqI.png?width=400&height=400`}
+                      alt="Product icon"
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </UseCaseCard>
 
