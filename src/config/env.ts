@@ -30,11 +30,13 @@ function getEnv(): Env {
     const parsed = envSchema.safeParse(process.env);
 
     if (!parsed.success) {
-        console.error(
-            "❌ Invalid environment variables:",
+        console.warn(
+            "⚠️ Missing environment variables (build will continue, but API routes may fail at runtime without them):",
             parsed.error.flatten().fieldErrors
         );
-        throw new Error("Missing or invalid environment variables. Check .env.local");
+        // During Vercel build, process.env might not have these variables.
+        // Returning process.env as Env prevents the build from crashing.
+        return process.env as unknown as Env;
     }
 
     return parsed.data;
