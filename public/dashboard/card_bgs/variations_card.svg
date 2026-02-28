@@ -1,0 +1,40 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0f9ff"/>
+      <stop offset="1" stop-color="#caf0f8"/>
+    </linearGradient>
+    <linearGradient id="img1" x1="25" y1="35" x2="95" y2="105" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0077b6"/>
+      <stop offset="1" stop-color="#00b4d8"/>
+    </linearGradient>
+    <linearGradient id="img2" x1="105" y1="35" x2="175" y2="105" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#03045e"/>
+      <stop offset="1" stop-color="#0077b6"/>
+    </linearGradient>
+    <linearGradient id="img3" x1="25" y1="110" x2="95" y2="175" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00b4d8"/>
+      <stop offset="1" stop-color="#90e0ef"/>
+    </linearGradient>
+    <linearGradient id="img4" x1="105" y1="110" x2="175" y2="175" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0077b6"/>
+      <stop offset="1" stop-color="#caf0f8"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="24" fill="url(#bg)"/>
+  <!-- 4 image grid -->
+  <rect x="30" y="35" width="62" height="62" rx="10" fill="url(#img1)"/>
+  <rect x="108" y="35" width="62" height="62" rx="10" fill="url(#img2)"/>
+  <rect x="30" y="110" width="62" height="62" rx="10" fill="url(#img3)"/>
+  <rect x="108" y="110" width="62" height="62" rx="10" fill="url(#img4)"/>
+  <!-- Mountain shapes in cards -->
+  <path d="M35 85 L55 60 L75 85" fill="white" opacity="0.25"/>
+  <circle cx="72" cy="50" r="6" fill="white" opacity="0.3"/>
+  <path d="M113 85 L133 55 L153 85" fill="white" opacity="0.2"/>
+  <path d="M35 160 L50 140 L60 150 L80 130 L87 160" fill="white" opacity="0.2"/>
+  <path d="M113 160 L130 140 L145 155 L165 135" stroke="white" stroke-width="2" opacity="0.3" fill="none"/>
+  <!-- Refresh/variation arrows -->
+  <circle cx="100" cy="100" r="14" fill="white" stroke="#0077b6" stroke-width="2"/>
+  <path d="M94 96 L100 90 L106 96" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M106 104 L100 110 L94 104" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
