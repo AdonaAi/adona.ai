@@ -48,7 +48,7 @@ const PricingPage = () => {
   };
 
   const features = [
-    { image: '/video/WhatsApp Video 2026-02-01 at 22.20.28.mp4', title: 'Your brand identity', description: 'Captured and learned in minutes.' },
+    { image: '/video/WhatsApp Video 2026-02-18 at 15.42.00.mp4', title: 'Your brand identity', description: 'Captured and learned in minutes.' },
     { image: 'https://framerusercontent.com/images/gbPXQNwLYZmsKC97Q06KQ1Rtg.gif', title: 'Swipe through fresh content ideas', description: 'ready to use.' },
     { image: 'https://framerusercontent.com/images/rT77PaiCArW0ZC8UuaTQeyaCY5A.gif', title: 'Manage multiple brands', description: 'in one place.' },
     { image: 'https://framerusercontent.com/images/v0rsQklNarczzCSb6NWVHMczCo.gif', title: 'Available on Desktop and Mobile', description: 'Wherever You Work.' },
@@ -570,12 +570,11 @@ const PricingPage = () => {
         <div className="max-w-[650px] mx-auto px-5 flex flex-col md:flex-row items-center justify-between gap-6 overflow-visible">
           <div className="flex flex-col items-center md:items-start gap-2 overflow-visible">
             <Image
-              src="/video/logo.png"
-              width={400}
-              height={200}
+              src="/images/BLACK (1).png"
+              width={180}
+              height={50}
               alt="adona.ai"
-              style={{ height: '200px', width: 'auto' }}
-              className="h-[200px]"
+              className="h-[50px] w-auto object-contain"
               unoptimized
             />
             <p className="text-[13px] text-[#86868b]">© 2026 Adona Ai. All rights reserved.</p>

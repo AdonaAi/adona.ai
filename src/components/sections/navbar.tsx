@@ -164,12 +164,12 @@ export default function Navbar() {
               className="flex items-center transition-transform hover:scale-105 active:scale-95"
             >
               <Image
-                src="/video/logo.png"
+                src="/images/BLACK (1).png"
                 alt="adona.ai"
-                width={400}
-                height={120}
-                // Increased logo size as requested
-                className="object-contain h-[70px] sm:h-[90px] md:h-[110px] lg:h-[120px] w-auto"
+                width={180}
+                height={50}
+                // Moderate logo size for navbar
+                className="object-contain h-[40px] sm:h-[48px] md:h-[56px] w-auto"
                 priority
                 unoptimized
               />

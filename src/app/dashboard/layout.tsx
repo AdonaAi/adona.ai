@@ -137,11 +137,11 @@ function SidebarContent({
             <div className="p-6 pb-2 relative z-20">
                 <Link href="/" className="relative block h-[45px]">
                     <Image
-                        src="/video/logo.png"
+                        src="/images/BLACK (1).png"
                         alt="adona.ai"
-                        width={300}
-                        height={100}
-                        className="object-contain h-[100px] w-auto absolute top-1/2 -translate-y-1/2 -left-3"
+                        width={180}
+                        height={50}
+                        className="object-contain h-[48px] w-auto absolute top-1/2 -translate-y-1/2 left-0"
                         priority
                         unoptimized
                     />
