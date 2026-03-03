@@ -9,7 +9,7 @@
 export interface ImageGenerationInput {
     /** Text prompt describing the image to generate */
     prompt: string;
-    /** Replicate model identifier (e.g. "google/nano-banana-pro") */
+    /** Replicate model identifier (e.g. "stability-ai/stable-diffusion-3.5-large-turbo") */
     model?: string;
     /** Image width in pixels */
     width?: number;
@@ -23,6 +23,10 @@ export interface ImageGenerationInput {
     aspectRatio?: string;
     /** Output format (e.g. "png", "jpg", "webp") */
     outputFormat?: string;
+    /** Deterministic seed — same seed + prompt = same output (brand consistency) */
+    seed?: number;
+    /** Guidance scale (CFG) — how closely to follow the prompt (default ~7) */
+    cfg?: number;
 }
 
 export interface ImageGenerationResult {

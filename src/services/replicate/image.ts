@@ -7,8 +7,8 @@
 import { getReplicateClient } from "./client";
 import type { ImageGenerationInput, ImageGenerationResult } from "./types";
 
-/** Default model: Google Nano Banana Pro */
-const DEFAULT_IMAGE_MODEL = "google/nano-banana-pro";
+/** Default model: Stable Diffusion 3.5 Large Turbo */
+const DEFAULT_IMAGE_MODEL = "stability-ai/stable-diffusion-3.5-large-turbo";
 
 /**
  * Generate an image using Replicate.
@@ -35,6 +35,8 @@ export async function generateImage(
             ...(input.height && { height: input.height }),
             ...(input.numOutputs && { num_outputs: input.numOutputs }),
             ...(input.negativePrompt && { negative_prompt: input.negativePrompt }),
+            ...(input.seed !== undefined && { seed: input.seed }),
+            ...(input.cfg !== undefined && { cfg: input.cfg }),
         },
     });
 

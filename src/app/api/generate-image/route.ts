@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const MODELS: Record<string, string> = {
-    "nano-banana": "google/nano-banana",
-    "nano-banana-pro": "google/nano-banana-pro",
-};
+/** Stable Diffusion 3.5 Large Turbo via Replicate */
+const SD_MODEL = "stability-ai/stable-diffusion-3.5-large-turbo";
 
 export async function POST(request: NextRequest) {
     try {
@@ -12,9 +10,10 @@ export async function POST(request: NextRequest) {
             prompt,
             aspect_ratio = "1:1",
             num_outputs = 1,
-            model = "nano-banana",
             output_format = "webp",
-            image_input,
+            negative_prompt,
+            seed,
+            cfg,
         } = body;
 
         if (!prompt || typeof prompt !== "string") {
@@ -26,33 +25,32 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Replicate API token not configured" }, { status: 500 });
         }
 
-        const modelPath = MODELS[model] || MODELS["nano-banana"];
-
         // Build input payload
         const input: Record<string, unknown> = {
             prompt,
             aspect_ratio,
             output_format,
+            num_outputs: Math.min(num_outputs, 4),
         };
 
-        // Only nano-banana-pro supports num_outputs
-        if (model === "nano-banana-pro") {
-            input.num_outputs = Math.min(num_outputs, 4);
-            input.safety_tolerance = 2;
+        // Deterministic seed — critical for brand-consistent generation
+        if (seed !== undefined && seed !== null && seed !== "") {
+            input.seed = Number(seed);
         }
 
-        // Support image_input for nano-banana (image editing)
-        if (image_input && Array.isArray(image_input) && image_input.length > 0) {
-            input.image_input = image_input;
-            // Use match_input_image if images are provided and no specific ratio set
-            if (aspect_ratio === "match_input") {
-                input.aspect_ratio = "match_input_image";
-            }
+        // Negative prompt — control what to avoid in outputs
+        if (negative_prompt && typeof negative_prompt === "string") {
+            input.negative_prompt = negative_prompt;
+        }
+
+        // Guidance scale (CFG) — how closely to follow the prompt
+        if (cfg !== undefined && cfg !== null) {
+            input.cfg = Number(cfg);
         }
 
         // Create prediction using Replicate API
         const response = await fetch(
-            `https://api.replicate.com/v1/models/${modelPath}/predictions`,
+            `https://api.replicate.com/v1/models/${SD_MODEL}/predictions`,
             {
                 method: "POST",
                 headers: {
@@ -104,7 +102,7 @@ export async function POST(request: NextRequest) {
                 );
             }
 
-            // Normalize output — nano-banana returns a single URL string, pro returns array
+            // Normalize output — SD returns an array of URLs
             const output = result.output;
             const images = Array.isArray(output) ? output : output ? [output] : [];
 

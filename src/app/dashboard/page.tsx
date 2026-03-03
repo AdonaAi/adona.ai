@@ -1,9 +1,16 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getBrandCompletionStatus } from '@/lib/brand-store';
 
 export default function DashboardPage() {
+  const [brandStatus, setBrandStatus] = useState({ product: false, context: false, moodboard: false, total: 0 });
+
+  useEffect(() => {
+    setBrandStatus(getBrandCompletionStatus());
+  }, []);
 
   return (
     <>
@@ -24,7 +31,7 @@ export default function DashboardPage() {
                 <h3 className="text-[26px] font-bold text-[#03045e] mb-0">Start here</h3>
                 <div className="flex flex-col gap-2.5 mb-4">
                   {/* Product */}
-                  <div className="backdrop-blur-sm rounded-[12px] transition-all cursor-pointer overflow-hidden relative bg-[#FBFBFB] hover:opacity-80">
+                  <Link href="/dashboard/dna" className={`backdrop-blur-sm rounded-[12px] transition-all cursor-pointer overflow-hidden relative hover:opacity-80 ${brandStatus.product ? 'bg-[#E8F5E8] border border-[#42A93E]/20' : 'bg-[#FBFBFB]'}`}>
                     <div className="flex relative overflow-hidden h-full gap-[10px]">
                       <div className="pointer-events-none absolute left-0 top-0 z-0">
                         <Image alt="" aria-hidden={true} width={57} height={58} className="-translate-x-1 -translate-y-1 mt-[10px] opacity-90" src="/icons/dashboard/start-here/product.svg" />
@@ -34,14 +41,18 @@ export default function DashboardPage() {
                           <span className="text-[16px] text-[#03045e] font-medium">Product</span>
                           <span className="text-[12px] font-medium line-clamp-1 text-[#6e6e73] tracking-[0.24px]">Define what you sell</span>
                         </div>
-                        <button className="backdrop-blur-[25px] bg-white border-b border-[#e6e6e7] p-2 rounded-[30px] hover:opacity-80 transition-all cursor-pointer flex items-center justify-center">
-                          <Image alt="" width={20} height={20} src="/icons/arrow-right-gray.svg" />
-                        </button>
+                        {brandStatus.product ? (
+                          <Image alt="" width={20} height={20} src="/icons/checkmark-green.svg" />
+                        ) : (
+                          <div className="backdrop-blur-[25px] bg-white border-b border-[#e6e6e7] p-2 rounded-[30px] hover:opacity-80 transition-all cursor-pointer flex items-center justify-center">
+                            <Image alt="" width={20} height={20} src="/icons/arrow-right-gray.svg" />
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
-                  {/* Context (completed) */}
-                  <div className="backdrop-blur-sm rounded-[12px] transition-all cursor-pointer overflow-hidden relative bg-[#E8F5E8] border border-[#42A93E]/20">
+                  </Link>
+                  {/* Context */}
+                  <Link href="/dashboard/dna" className={`backdrop-blur-sm rounded-[12px] transition-all cursor-pointer overflow-hidden relative hover:opacity-80 ${brandStatus.context ? 'bg-[#E8F5E8] border border-[#42A93E]/20' : 'bg-[#FBFBFB]'}`}>
                     <div className="flex relative overflow-hidden h-full gap-[10px]">
                       <div className="pointer-events-none absolute left-0 top-0 z-0">
                         <Image alt="" aria-hidden={true} width={57} height={58} className="translate-x-1 -translate-y-1 mt-[10px] opacity-90" src="/icons/dashboard/start-here/context.svg" />
@@ -51,12 +62,18 @@ export default function DashboardPage() {
                           <span className="text-[16px] text-[#03045e] font-medium">Context</span>
                           <span className="text-[12px] font-medium line-clamp-1 text-[#6e6e73] tracking-[0.24px]">Define your brand</span>
                         </div>
-                        <Image alt="" width={20} height={20} src="/icons/checkmark-green.svg" />
+                        {brandStatus.context ? (
+                          <Image alt="" width={20} height={20} src="/icons/checkmark-green.svg" />
+                        ) : (
+                          <div className="backdrop-blur-[25px] bg-white border-b border-[#e6e6e7] p-2 rounded-[30px] hover:opacity-80 transition-all cursor-pointer flex items-center justify-center">
+                            <Image alt="" width={20} height={20} src="/icons/arrow-right-gray.svg" />
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                   {/* Moodboard */}
-                  <div className="backdrop-blur-sm rounded-[12px] transition-all cursor-pointer overflow-hidden relative bg-[#FBFBFB] hover:opacity-80">
+                  <Link href="/dashboard/dna/moodboard" className={`backdrop-blur-sm rounded-[12px] transition-all cursor-pointer overflow-hidden relative hover:opacity-80 ${brandStatus.moodboard ? 'bg-[#E8F5E8] border border-[#42A93E]/20' : 'bg-[#FBFBFB]'}`}>
                     <div className="flex relative overflow-hidden h-full gap-[10px]">
                       <div className="pointer-events-none absolute left-0 top-0 z-0">
                         <Image alt="" aria-hidden={true} width={57} height={58} className="-translate-x-1 -translate-y-2 scale-[0.9] mt-[10px] opacity-90" src="/icons/dashboard/start-here/moodboard.svg" />
@@ -66,12 +83,16 @@ export default function DashboardPage() {
                           <span className="text-[16px] text-[#03045e] font-medium">Moodboard</span>
                           <span className="text-[12px] font-medium line-clamp-1 text-[#6e6e73] tracking-[0.24px]">Define your style</span>
                         </div>
-                        <button className="backdrop-blur-[25px] bg-white border-b border-[#e6e6e7] p-2 rounded-[30px] hover:opacity-80 transition-all cursor-pointer flex items-center justify-center">
-                          <Image alt="" width={20} height={20} src="/icons/arrow-right-gray.svg" />
-                        </button>
+                        {brandStatus.moodboard ? (
+                          <Image alt="" width={20} height={20} src="/icons/checkmark-green.svg" />
+                        ) : (
+                          <div className="backdrop-blur-[25px] bg-white border-b border-[#e6e6e7] p-2 rounded-[30px] hover:opacity-80 transition-all cursor-pointer flex items-center justify-center">
+                            <Image alt="" width={20} height={20} src="/icons/arrow-right-gray.svg" />
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>

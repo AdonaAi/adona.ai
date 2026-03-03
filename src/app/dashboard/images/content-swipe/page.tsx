@@ -3,35 +3,31 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { saveMultipleToLibrary } from "@/lib/library";
 
 const ASPECT_RATIOS = [
     { label: "1:1", w: 20, h: 20 },
     { label: "9:16", w: 11, h: 20 },
     { label: "16:9", w: 20, h: 11 },
     { label: "2:3", w: 13, h: 20 },
+    { label: "3:2", w: 20, h: 13 },
 ];
 
-const IMAGE_AMOUNTS_PRO = [1, 2, 4];
-
-const MODELS = [
-    { id: "nano-banana", label: "Nano Banana", emoji: "🍌", desc: "Standard — supports image input" },
-    { id: "nano-banana-pro", label: "Nano Banana Pro", emoji: "🍌🍌", desc: "Pro — higher quality, multi-output" },
-];
+const IMAGE_AMOUNTS = [1, 2, 4];
 
 export default function ContentSwipePage() {
     const [prompt, setPrompt] = useState("");
     const [selectedRatio, setSelectedRatio] = useState("1:1");
     const [selectedAmount, setSelectedAmount] = useState(1);
-    const [selectedModel, setSelectedModel] = useState("nano-banana");
     const [advancedOpen, setAdvancedOpen] = useState(true);
     const [isGenerating, setIsGenerating] = useState(false);
     const [generatedImages, setGeneratedImages] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [negativePrompt, setNegativePrompt] = useState("");
+    const [seed, setSeed] = useState("");
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+    const [savedToast, setSavedToast] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const isPro = selectedModel === "nano-banana-pro";
-    const currentModel = MODELS.find((m) => m.id === selectedModel)!;
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -61,17 +57,16 @@ export default function ContentSwipePage() {
             const payload: Record<string, unknown> = {
                 prompt: prompt.trim(),
                 aspect_ratio: selectedRatio,
-                model: selectedModel,
+                num_outputs: selectedAmount,
                 output_format: "webp",
             };
 
-            if (isPro) {
-                payload.num_outputs = selectedAmount;
+            if (negativePrompt.trim()) {
+                payload.negative_prompt = negativePrompt.trim();
             }
 
-            // For regular nano-banana with uploaded images
-            if (!isPro && uploadedImages.length > 0) {
-                payload.image_input = uploadedImages.map((url) => ({ value: url }));
+            if (seed.trim()) {
+                payload.seed = Number(seed.trim());
             }
 
             const res = await fetch("/api/generate-image", {
@@ -89,6 +84,18 @@ export default function ContentSwipePage() {
 
             if (data.images && data.images.length > 0) {
                 setGeneratedImages(data.images);
+
+                // Auto-save to Library
+                saveMultipleToLibrary(data.images, {
+                    prompt: prompt.trim(),
+                    negativePrompt: negativePrompt.trim() || undefined,
+                    seed: seed.trim() ? Number(seed.trim()) : undefined,
+                    aspectRatio: selectedRatio,
+                    model: "stable-diffusion-3.5-large-turbo",
+                    source: "content-swipe",
+                });
+                setSavedToast(true);
+                setTimeout(() => setSavedToast(false), 4000);
             } else {
                 setError("No images were generated. Try a different prompt.");
             }
@@ -149,8 +156,8 @@ export default function ContentSwipePage() {
                 {/* Model badge */}
                 <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full px-3 py-[7px]"
                     style={{ boxShadow: "0px 5px 10px 0px rgba(230,230,231,0.15), inset -2px 2px 10px 0px rgba(255,255,255,0.8)" }}>
-                    <span className="text-[14px]">{currentModel.emoji}</span>
-                    <span className="text-[13px] font-medium text-[#03045e] ml-1">{currentModel.label}</span>
+                    <span className="text-[14px]">🎨</span>
+                    <span className="text-[13px] font-medium text-[#03045e] ml-1">Stable Diffusion 3.5</span>
                 </div>
             </div>
 
@@ -158,8 +165,8 @@ export default function ContentSwipePage() {
             {showResults && (
                 <div className="flex-1 flex flex-col items-center relative z-10 pb-20">
                     <div className={`grid gap-4 w-full max-w-[900px] mx-auto ${generatedImages.length === 1 ? "grid-cols-1 max-w-[500px]" :
-                            generatedImages.length === 2 ? "grid-cols-1 sm:grid-cols-2 max-w-[700px]" :
-                                "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"
+                        generatedImages.length === 2 ? "grid-cols-1 sm:grid-cols-2 max-w-[700px]" :
+                            "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"
                         }`}>
                         {generatedImages.map((url, i) => (
                             <div key={i} className="relative group rounded-2xl overflow-hidden bg-white shadow-lg">
@@ -167,7 +174,7 @@ export default function ContentSwipePage() {
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-end justify-center opacity-0 group-hover:opacity-100">
                                     <a
                                         href={url}
-                                        download={`nano-banana-${i + 1}.webp`}
+                                        download={`adona-sd-${i + 1}.webp`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="mb-4 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 text-[14px] font-medium text-[#03045e] hover:bg-white transition-colors shadow-lg"
@@ -181,9 +188,9 @@ export default function ContentSwipePage() {
                             </div>
                         ))}
                     </div>
-                    <div className="flex gap-3 mt-6">
+                    <div className="flex gap-3 mt-6 items-center">
                         <button
-                            onClick={() => { setGeneratedImages([]); setPrompt(""); setUploadedImages([]); }}
+                            onClick={() => { setGeneratedImages([]); setPrompt(""); setNegativePrompt(""); setSeed(""); setUploadedImages([]); }}
                             className="flex items-center gap-2 bg-white rounded-full px-5 py-2.5 text-[14px] font-medium text-[#03045e] hover:bg-[#f5f5f7] transition-colors cursor-pointer shadow-md"
                         >
                             New Prompt
@@ -196,6 +203,13 @@ export default function ContentSwipePage() {
                         >
                             {isGenerating ? "Generating..." : "Generate Again"}
                         </button>
+                        <Link
+                            href="/dashboard/library"
+                            className="flex items-center gap-2 bg-white rounded-full px-5 py-2.5 text-[14px] font-medium text-[#0077b6] hover:bg-[#caf0f8]/30 transition-colors cursor-pointer shadow-md border border-[#90e0ef]/30"
+                        >
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12v10H2V3z" stroke="#0077b6" strokeWidth="1.2" strokeLinecap="round" /><path d="M2 6h12" stroke="#0077b6" strokeWidth="1.2" /><path d="M5 3V1" stroke="#0077b6" strokeWidth="1.2" strokeLinecap="round" /></svg>
+                            View Library
+                        </Link>
                     </div>
                 </div>
             )}
@@ -205,30 +219,6 @@ export default function ContentSwipePage() {
                 <>
                     <div className="flex-1 flex items-center justify-center relative z-10">
                         <div className="w-full max-w-[600px] flex flex-col gap-6">
-
-                            {/* ── Model Selector ── */}
-                            <div className="flex flex-col gap-[10px]">
-                                <span className="font-satoshi font-medium text-[16px] text-[#1d1d1f] tracking-[0.16px]">AI Model</span>
-                                <div className="flex bg-[#f7f7f7] rounded-full p-[5px] w-full border border-white">
-                                    {MODELS.map((m) => {
-                                        const active = selectedModel === m.id;
-                                        return (
-                                            <button
-                                                key={m.id}
-                                                onClick={() => {
-                                                    setSelectedModel(m.id);
-                                                    if (m.id === "nano-banana") setSelectedAmount(1);
-                                                }}
-                                                className={`flex-1 cursor-pointer font-medium rounded-full transition-all flex items-center justify-center gap-[6px] py-[5px] px-[10px] h-[37px] text-[14px] ${active ? "bg-white text-[#1d1d1f] shadow-sm" : "text-[#6e6e73] hover:text-[#1d1d1f]"}`}
-                                            >
-                                                <span>{m.emoji}</span>
-                                                <span>{m.label}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                                <span className="text-[12px] text-[#6e6e73] ml-1">{currentModel.desc}</span>
-                            </div>
 
                             {/* ── Prompt ── */}
                             <div>
@@ -281,7 +271,7 @@ export default function ContentSwipePage() {
                                             <button
                                                 onClick={() => fileInputRef.current?.click()}
                                                 className="w-[28px] h-[28px] flex items-center justify-center rounded-full border border-[#e2e8f0] text-[#6e6e73] hover:bg-[#f5f5f7] transition-colors cursor-pointer"
-                                                title={isPro ? "Upload reference images (Pro)" : "Upload images for editing"}
+                                                title="Upload reference images"
                                             >
                                                 <span className="text-[18px] leading-none">+</span>
                                             </button>
@@ -299,35 +289,36 @@ export default function ContentSwipePage() {
 
                             {/* ── Advanced panels ── */}
                             {advancedOpen && (
-                                <div className="flex gap-[20px] flex-col sm:flex-row">
-                                    {/* Aspect ratio */}
-                                    <div className="flex-1 flex flex-col gap-[10px]">
-                                        <span className="font-satoshi font-medium text-[16px] text-[#6e6e73] tracking-[0.16px]">Aspect ratio</span>
-                                        <div className="flex bg-[#f7f7f7] rounded-full p-[5px] w-full border border-white">
-                                            {ASPECT_RATIOS.map((r) => {
-                                                const active = selectedRatio === r.label;
-                                                return (
-                                                    <button
-                                                        key={r.label}
-                                                        onClick={() => setSelectedRatio(r.label)}
-                                                        className={`flex-1 cursor-pointer font-medium rounded-full transition-all flex items-center justify-center gap-[5px] py-[5px] px-[10px] h-[37px] text-[14px] ${active ? "bg-white text-[#1d1d1f]" : "text-[#6e6e73] hover:text-[#1d1d1f]"}`}
-                                                    >
-                                                        <svg width={r.w * 0.6} height={r.h * 0.6} viewBox={`0 0 ${r.w} ${r.h}`} fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <rect x="0.5" y="0.5" width={r.w - 1} height={r.h - 1} rx="2.5" stroke={active ? "#1d1d1f" : "#b0b0b5"} strokeWidth="1" />
-                                                        </svg>
-                                                        {r.label}
-                                                    </button>
-                                                );
-                                            })}
+                                <div className="flex flex-col gap-5">
+                                    {/* Row 1: Aspect ratio + Image amount */}
+                                    <div className="flex gap-[20px] flex-col sm:flex-row">
+                                        {/* Aspect ratio */}
+                                        <div className="flex-1 flex flex-col gap-[10px]">
+                                            <span className="font-satoshi font-medium text-[16px] text-[#6e6e73] tracking-[0.16px]">Aspect ratio</span>
+                                            <div className="flex bg-[#f7f7f7] rounded-full p-[5px] w-full border border-white">
+                                                {ASPECT_RATIOS.map((r) => {
+                                                    const active = selectedRatio === r.label;
+                                                    return (
+                                                        <button
+                                                            key={r.label}
+                                                            onClick={() => setSelectedRatio(r.label)}
+                                                            className={`flex-1 cursor-pointer font-medium rounded-full transition-all flex items-center justify-center gap-[5px] py-[5px] px-[10px] h-[37px] text-[14px] ${active ? "bg-white text-[#1d1d1f]" : "text-[#6e6e73] hover:text-[#1d1d1f]"}`}
+                                                        >
+                                                            <svg width={r.w * 0.6} height={r.h * 0.6} viewBox={`0 0 ${r.w} ${r.h}`} fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <rect x="0.5" y="0.5" width={r.w - 1} height={r.h - 1} rx="2.5" stroke={active ? "#1d1d1f" : "#b0b0b5"} strokeWidth="1" />
+                                                            </svg>
+                                                            {r.label}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {/* Image amount — only for Pro */}
-                                    {isPro && (
+                                        {/* Image amount */}
                                         <div className="flex-1 flex flex-col gap-[10px]">
                                             <span className="font-satoshi font-medium text-[16px] text-[#6e6e73] tracking-[0.16px]">Image amount</span>
                                             <div className="flex bg-[#f7f7f7] rounded-full p-[5px] w-full border border-white">
-                                                {IMAGE_AMOUNTS_PRO.map((amount) => {
+                                                {IMAGE_AMOUNTS.map((amount) => {
                                                     const active = selectedAmount === amount;
                                                     return (
                                                         <button
@@ -341,7 +332,41 @@ export default function ContentSwipePage() {
                                                 })}
                                             </div>
                                         </div>
-                                    )}
+                                    </div>
+
+                                    {/* Row 2: Negative prompt */}
+                                    <div className="flex flex-col gap-[10px]">
+                                        <span className="font-satoshi font-medium text-[16px] text-[#6e6e73] tracking-[0.16px]">Negative prompt</span>
+                                        <div className="bg-[#f7f7f7] rounded-2xl border border-white p-3">
+                                            <textarea
+                                                value={negativePrompt}
+                                                onChange={(e) => setNegativePrompt(e.target.value)}
+                                                placeholder="What to avoid — e.g. blurry, low quality, watermark, text"
+                                                className="w-full min-h-[50px] resize-none outline-none bg-transparent font-satoshi text-[14px] text-[#1d1d1f] placeholder-[#b0b0b5]"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Row 3: Seed */}
+                                    <div className="flex flex-col gap-[10px]">
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-satoshi font-medium text-[16px] text-[#6e6e73] tracking-[0.16px]">Seed</span>
+                                            <span className="text-[12px] text-[#b0b0b5] bg-[#f0f0f2] rounded-full px-2 py-0.5">optional</span>
+                                        </div>
+                                        <div className="bg-[#f7f7f7] rounded-full border border-white px-4 py-2.5 flex items-center gap-2">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M8 1v2m0 10v2M1 8h2m10 0h2M3.05 3.05l1.41 1.41m7.08 7.08l1.41 1.41M3.05 12.95l1.41-1.41m7.08-7.08l1.41-1.41" stroke="#b0b0b5" strokeWidth="1.5" strokeLinecap="round" />
+                                            </svg>
+                                            <input
+                                                type="number"
+                                                value={seed}
+                                                onChange={(e) => setSeed(e.target.value)}
+                                                placeholder="Leave empty for random — use a number for reproducible results"
+                                                className="flex-1 outline-none bg-transparent font-satoshi text-[14px] text-[#1d1d1f] placeholder-[#b0b0b5] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            />
+                                        </div>
+                                        <span className="text-[12px] text-[#b0b0b5] ml-1">Same seed + same prompt = same image. Great for brand consistency.</span>
+                                    </div>
                                 </div>
                             )}
 
@@ -363,8 +388,8 @@ export default function ContentSwipePage() {
                                     <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#0077b6] animate-spin" />
                                 </div>
                                 <div className="flex flex-col items-center gap-1">
-                                    <span className="text-[16px] font-bold text-[#03045e]">{currentModel.emoji} Generating with {currentModel.label}...</span>
-                                    <span className="text-[13px] text-[#6e6e73]">This may take 15-60 seconds</span>
+                                    <span className="text-[16px] font-bold text-[#03045e]">🎨 Generating with Stable Diffusion...</span>
+                                    <span className="text-[13px] text-[#6e6e73]">This may take 10-30 seconds</span>
                                 </div>
                             </div>
                         </div>
@@ -388,7 +413,7 @@ export default function ContentSwipePage() {
                                     <>
                                         <div className="flex items-center gap-[2px] bg-white/25 rounded-full px-[5px] ml-2 py-[1.5px]">
                                             <img alt="Credit" loading="lazy" width="15" height="15" src="/creditsLightning.svg" style={{ color: "transparent" }} />
-                                            <span className="font-satoshi font-bold text-[12px] text-white tracking-[0.24px]">{isPro ? selectedAmount : 1}</span>
+                                            <span className="font-satoshi font-bold text-[12px] text-white tracking-[0.24px]">{selectedAmount}</span>
                                         </div>
                                         <svg className="w-5 h-5" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M8.29289 6.17571C7.90237 6.56623 7.90237 7.1994 8.29289 7.58992L13.5858 12.8828L8.29289 18.1757C7.90237 18.5662 7.90237 19.1994 8.29289 19.5899C8.68342 19.9804 9.31658 19.9804 9.70711 19.5899L15.7071 13.5899C16.0976 13.1994 16.0976 12.5662 15.7071 12.1757L9.70711 6.17571C9.31658 5.78518 8.68342 5.78518 8.29289 6.17571Z" fill="#FFFFFF" />
@@ -399,6 +424,19 @@ export default function ContentSwipePage() {
                         </button>
                     </div>
                 </>
+            )}
+
+            {/* ─── Saved Toast ─── */}
+            {savedToast && (
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-white rounded-full px-5 py-3 shadow-2xl border border-[#90e0ef]/30 animate-[slideUp_0.3s_ease-out]">
+                    <div className="w-6 h-6 rounded-full bg-[#34C759] flex items-center justify-center">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    </div>
+                    <span className="text-[14px] font-medium text-[#1d1d1f]">Saved to Library</span>
+                    <Link href="/dashboard/library" className="text-[13px] font-bold text-[#0077b6] hover:text-[#00b4d8] transition-colors">
+                        View →
+                    </Link>
+                </div>
             )}
         </div>
     );
