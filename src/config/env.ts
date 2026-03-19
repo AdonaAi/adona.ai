@@ -19,6 +19,9 @@ const envSchema = z.object({
     R2_BUCKET_NAME: z.string().default("adona-ai-assets"),
     R2_PUBLIC_URL: z.string().url().optional(),
 
+    // ── OpenAI (Brand URL Analysis) ────────────────────
+    OPENAI_API_KEY: z.string().optional(),
+
     // ── Inngest (Job Queue) ───────────────────────────
     INNGEST_EVENT_KEY: z.string().optional(),
     INNGEST_SIGNING_KEY: z.string().optional(),

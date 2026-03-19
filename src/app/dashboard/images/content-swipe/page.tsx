@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { saveMultipleToLibrary } from "@/lib/library";
+import { getBrandDNA, type BrandDNA } from "@/lib/brand-store";
 
 const ASPECT_RATIOS = [
     { label: "1:1", w: 20, h: 20 },
@@ -14,6 +15,71 @@ const ASPECT_RATIOS = [
 ];
 
 const IMAGE_AMOUNTS = [1, 2, 4];
+
+/** Example prompts — generic fallback + brand-aware variants */
+const GENERIC_PROMPTS = [
+    "Product showcase on clean white background, studio lighting, premium feel",
+    "Abstract gradient background with geometric shapes, modern aesthetic",
+    "Social media banner with bold typography space, eye-catching composition",
+    "Flat lay lifestyle photography, top-down view, curated arrangement",
+    "Minimalist hero image with subtle texture, soft lighting, editorial style",
+    "Dynamic action shot with motion blur, energetic and vibrant",
+];
+
+/** Industry-specific prompt ideas — clean text, Brand DNA is added behind the scenes by buildBrandPrompt */
+function getBrandPromptSuggestions(dna: BrandDNA): string[] {
+    const industry = (dna.industry || "").toLowerCase();
+
+    if (industry.includes("tech")) {
+        return [
+            "Premium cables and connectors on sleek dark surface, studio product photography",
+            "Data center with organized cable management, blue accent lighting, wide angle",
+            "Close-up macro shot of connector pins, metallic sheen, shallow depth of field",
+            "Minimalist office desk with clean cable setup, natural window lighting",
+            "Abstract glowing fiber optic lines on dark background, futuristic visualization",
+            "Flat lay of tech accessories neatly arranged on marble surface, top-down editorial",
+        ];
+    }
+    if (industry.includes("beauty") || industry.includes("cosmetic")) {
+        return [
+            "Product lineup on marble surface, soft golden lighting, luxury beauty aesthetic",
+            "Close-up texture shot of skincare, dewy droplets, soft focus beauty photography",
+            "Flat lay of beauty products with flowers and natural elements, pastel tones",
+            "Portrait with soft bokeh background, natural makeup, editorial beauty shot",
+            "Minimalist packaging mockup on clean background, premium brand aesthetic",
+            "Spa still life with candles, botanicals, and products, warm ambient lighting",
+        ];
+    }
+    if (industry.includes("fashion")) {
+        return [
+            "Lookbook photo — model in urban setting, golden hour lighting, editorial style",
+            "Clothing flat lay on textured fabric, styled accessories, overhead composition",
+            "Street style photography, bold outfit, architectural background, dynamic pose",
+            "Close-up fabric texture detail, premium material quality, shallow depth of field",
+            "Fashion campaign hero image, cinematic lighting, magazine-quality composition",
+            "Accessory on minimalist pedestal, dramatic shadows, studio product photography",
+        ];
+    }
+    if (industry.includes("food") || industry.includes("beverage")) {
+        return [
+            "Overhead food photography, fresh ingredients, artful plating, natural light",
+            "Beverage pour shot with splash effect, dramatic lighting, commercial quality",
+            "Restaurant interior ambiance, warm lighting, inviting atmosphere, wide angle",
+            "Ingredients flat lay on rustic wooden surface, vibrant colors, farm-to-table",
+            "Close-up macro food texture, steam rising, appetizing detail, shallow focus",
+            "Cocktail with garnish, bar setting, moody lighting, dark background",
+        ];
+    }
+
+    return [
+        "Brand hero image, professional photography, premium feel, clean composition",
+        "Team collaboration scene, bright modern office, natural lighting",
+        "Abstract pattern with geometric shapes, gradient tones, marketing creative",
+        "Product showcase on clean surface, studio lighting, commercial-grade photo",
+        "Social media content — eye-catching visual, bold composition, vibrant colors",
+        "Lifestyle scene, authentic and aspirational, soft natural lighting",
+    ];
+}
 
 export default function ContentSwipePage() {
     const [prompt, setPrompt] = useState("");
@@ -27,7 +93,17 @@ export default function ContentSwipePage() {
     const [seed, setSeed] = useState("");
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
     const [savedToast, setSavedToast] = useState(false);
+    const [brandDna, setBrandDna] = useState<BrandDNA | null>(null);
+    const [useBrandDna, setUseBrandDna] = useState(true);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        const dna = getBrandDNA();
+        // Only set if brand has meaningful data
+        if (dna.name || dna.mission || dna.colors.length > 0 || dna.toneOfVoice.length > 0) {
+            setBrandDna(dna);
+        }
+    }, []);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -47,6 +123,33 @@ export default function ContentSwipePage() {
         setUploadedImages((prev) => prev.filter((_, i) => i !== index));
     };
 
+    /** Build an enhanced prompt that weaves in Brand DNA context */
+    const buildBrandPrompt = (userPrompt: string): string => {
+        if (!useBrandDna || !brandDna) return userPrompt;
+
+        const parts: string[] = [];
+
+        // Brand identity context
+        if (brandDna.name) parts.push(`for the brand "${brandDna.name}"`);
+        if (brandDna.industry) parts.push(`in the ${brandDna.industry} industry`);
+
+        // Visual style
+        if (brandDna.styleTags.length > 0) parts.push(`style: ${brandDna.styleTags.join(", ")}`);
+        if (brandDna.toneOfVoice.length > 0) parts.push(`mood: ${brandDna.toneOfVoice.join(", ").toLowerCase()}`);
+
+        // Colors
+        if (brandDna.colors.length > 0) {
+            parts.push(`brand color palette: ${brandDna.colors.join(", ")}`);
+        }
+
+        // Fonts hint
+        if (brandDna.fonts.length > 0) parts.push(`typography style: ${brandDna.fonts.join(", ")}`);
+
+        if (parts.length === 0) return userPrompt;
+
+        return `${userPrompt}. ${parts.join(". ")}. High quality, professional marketing creative.`;
+    };
+
     const handleGenerate = async () => {
         if (!prompt.trim()) return;
         setIsGenerating(true);
@@ -54,8 +157,10 @@ export default function ContentSwipePage() {
         setGeneratedImages([]);
 
         try {
+            const enhancedPrompt = buildBrandPrompt(prompt.trim());
+
             const payload: Record<string, unknown> = {
-                prompt: prompt.trim(),
+                prompt: enhancedPrompt,
                 aspect_ratio: selectedRatio,
                 num_outputs: selectedAmount,
                 output_format: "webp",
@@ -275,7 +380,15 @@ export default function ContentSwipePage() {
                                             >
                                                 <span className="text-[18px] leading-none">+</span>
                                             </button>
-                                            <button className="flex items-center gap-1.5 text-[#0077b6] hover:text-[#00b4d8] transition-colors cursor-pointer font-medium">
+                                            <button
+                                                onClick={() => {
+                                                    const pool = brandDna && useBrandDna
+                                                        ? getBrandPromptSuggestions(brandDna)
+                                                        : GENERIC_PROMPTS;
+                                                    setPrompt(pool[Math.floor(Math.random() * pool.length)]);
+                                                }}
+                                                className="flex items-center gap-1.5 text-[#0077b6] hover:text-[#00b4d8] transition-colors cursor-pointer font-medium"
+                                            >
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M2 11.5V14H4.5L11.8733 6.62667L9.37333 4.12667L2 11.5Z" fill="currentColor" opacity="0.5" />
                                                     <path d="M13.8067 3.18C14.0667 2.92 14.0667 2.5 13.8067 2.24L11.76 0.193333C11.5 -0.0666667 11.08 -0.0666667 10.82 0.193333L9.58667 1.42667L12.0867 3.92667L13.8067 3.18Z" fill="currentColor" />
@@ -286,6 +399,70 @@ export default function ContentSwipePage() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* ── Example Prompts ── */}
+                            {!prompt.trim() && (
+                                <div className="flex flex-col gap-2">
+                                    <span className="font-satoshi font-medium text-[13px] text-[#6e6e73] tracking-[0.13px]">
+                                        Try an example
+                                    </span>
+                                    <div className="flex flex-wrap gap-2">
+                                        {(brandDna && useBrandDna
+                                            ? getBrandPromptSuggestions(brandDna)
+                                            : GENERIC_PROMPTS
+                                        ).slice(0, 6).map((p, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => setPrompt(p)}
+                                                className="text-left text-[13px] text-[#03045e] bg-white border border-[#e2e8f0] hover:border-[#90e0ef] hover:bg-[#caf0f8]/20 rounded-xl px-3 py-2 transition-all cursor-pointer leading-snug"
+                                            >
+                                                {p.length > 70 ? p.slice(0, 67) + "..." : p}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* ── Brand DNA Context ── */}
+                            {brandDna && (
+                                <div className={`flex items-center justify-between rounded-2xl px-4 py-3 transition-all ${useBrandDna ? "bg-[#caf0f8]/30 border border-[#90e0ef]/40" : "bg-[#f7f7f7] border border-[#e6e6e7]"}`}>
+                                    <div className="flex items-center gap-3">
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${useBrandDna ? "bg-[#0077b6]" : "bg-[#e6e6e7]"}`}>
+                                            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1l2 3h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-3z" fill="white" /></svg>
+                                        </div>
+                                        <div>
+                                            <p className={`text-[14px] font-bold ${useBrandDna ? "text-[#03045e]" : "text-[#6e6e73]"}`}>
+                                                Brand DNA: {brandDna.name || "Configured"}
+                                            </p>
+                                            <p className="text-[12px] text-[#6e6e73]">
+                                                {useBrandDna ? (
+                                                    <>
+                                                        {brandDna.colors.length > 0 && (
+                                                            <span className="inline-flex items-center gap-1 mr-2">
+                                                                {brandDna.colors.slice(0, 4).map((c) => (
+                                                                    <span key={c} className="inline-block w-3 h-3 rounded-full border border-white/50" style={{ backgroundColor: c }} />
+                                                                ))}
+                                                            </span>
+                                                        )}
+                                                        {brandDna.toneOfVoice.length > 0 && <span>{brandDna.toneOfVoice.join(", ")}</span>}
+                                                        {brandDna.styleTags.length > 0 && <span> &middot; {brandDna.styleTags.slice(0, 3).join(", ")}</span>}
+                                                    </>
+                                                ) : (
+                                                    "Brand context disabled for this generation"
+                                                )}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => setUseBrandDna(!useBrandDna)}
+                                        className="cursor-pointer"
+                                    >
+                                        <div className={`w-[42px] h-[24px] rounded-full p-[2px] transition-colors duration-200 ${useBrandDna ? "bg-[#0077b6]" : "bg-[#e2e8f0]"}`}>
+                                            <div className={`w-[20px] h-[20px] rounded-full bg-white shadow transition-transform duration-200 ${useBrandDna ? "translate-x-[18px]" : "translate-x-0"}`} />
+                                        </div>
+                                    </button>
+                                </div>
+                            )}
 
                             {/* ── Advanced panels ── */}
                             {advancedOpen && (
@@ -426,16 +603,118 @@ export default function ContentSwipePage() {
                 </>
             )}
 
-            {/* ─── Saved Toast ─── */}
+            {/* ─── Generation Complete Popup ─── */}
             {savedToast && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-white rounded-full px-5 py-3 shadow-2xl border border-[#90e0ef]/30 animate-[slideUp_0.3s_ease-out]">
-                    <div className="w-6 h-6 rounded-full bg-[#34C759] flex items-center justify-center">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <div className="fixed bottom-6 right-6 z-50 animate-[slideUp_0.3s_ease-out]">
+                    <div
+                        className="relative flex flex-col gap-5 p-[10px] w-[330px] bg-white rounded-[20px]"
+                        style={{ boxShadow: "rgb(230, 230, 231) 0px 0px 50px 0px" }}
+                    >
+                        {/* Header */}
+                        <div className="flex items-center justify-between pr-[5px]">
+                            <span className="font-satoshi font-medium text-[16px] text-[#6e6e73] leading-normal">
+                                Generation complete
+                            </span>
+                            <button
+                                onClick={() => setSavedToast(false)}
+                                className="flex items-center justify-center hover:opacity-70 transition-opacity cursor-pointer"
+                            >
+                                <svg width="20" height="20" viewBox="0 0 14 14" fill="none">
+                                    <path d="M11 3L3 11M3 3L11 11" stroke="#6E6E73" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Task items */}
+                        <div className="flex flex-col gap-[10px] max-h-[60vh] overflow-y-auto">
+                            {/* Swipes done */}
+                            <button
+                                onClick={() => { /* already viewing results */ }}
+                                className="bg-[#f3fbf2] flex items-center justify-between p-[10px] rounded-[15px] w-full cursor-pointer hover:opacity-90 transition-opacity"
+                            >
+                                <div className="flex items-center gap-[10px]">
+                                    <div className="w-[37px] h-[37px] rounded-full bg-white flex items-center justify-center">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <rect x="2" y="2" width="16" height="16" rx="3" stroke="#42a93e" strokeWidth="1.5" />
+                                            <path d="M6 10l2.5 2.5L14 7" stroke="#42a93e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </div>
+                                    <span className="font-satoshi font-medium text-[16px] text-[#42a93e] leading-normal">
+                                        Swipes done
+                                    </span>
+                                </div>
+                                <div className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M7.5 15L12.5 10L7.5 5" stroke="#42A93E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                            </button>
+
+                            {/* Saved to Library */}
+                            <Link
+                                href="/dashboard/library"
+                                className="bg-[#f3fbf2] flex items-center justify-between p-[10px] rounded-[15px] w-full cursor-pointer hover:opacity-90 transition-opacity"
+                            >
+                                <div className="flex items-center gap-[10px]">
+                                    <div className="w-[37px] h-[37px] rounded-full bg-white flex items-center justify-center">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <path d="M4 3h12v14l-6-3-6 3V3z" stroke="#42a93e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </div>
+                                    <span className="font-satoshi font-medium text-[16px] text-[#42a93e] leading-normal">
+                                        Saved to Library
+                                    </span>
+                                </div>
+                                <div className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M7.5 15L12.5 10L7.5 5" stroke="#42A93E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                            </Link>
+
+                            {/* Brand DNA applied */}
+                            {brandDna && useBrandDna && (
+                                <div className="bg-[#f3fbf2] flex items-center justify-between p-[10px] rounded-[15px] w-full">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div className="w-[37px] h-[37px] rounded-full bg-white flex items-center justify-center">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <path d="M10 2l2.5 3.5H16l-3 3.5 1 4.5-4-2.5L6 13.5l1-4.5-3-3.5h3.5L10 2z" stroke="#42a93e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <span className="font-satoshi font-medium text-[16px] text-[#42a93e] leading-normal">
+                                            Brand DNA applied
+                                        </span>
+                                    </div>
+                                    <div className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center">
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                            <path d="M3 7l2.5 2.5L11 4" stroke="#42A93E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Bottom actions */}
+                        <div className="flex items-center gap-[10px]">
+                            <button
+                                onClick={() => setSavedToast(false)}
+                                className="h-[37px] px-[12px] flex items-center justify-center rounded-full bg-[#fbfbfb] hover:opacity-80 transition-opacity cursor-pointer"
+                                style={{ boxShadow: "rgb(230, 230, 231) 0px -1px 0px 0px inset" }}
+                            >
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="#03045e" strokeWidth="1.2" />
+                                    <path d="M10 6v4l3 2" stroke="#03045e" strokeWidth="1.2" strokeLinecap="round" />
+                                </svg>
+                            </button>
+                            <Link
+                                href="/dashboard/library"
+                                className="flex-1 h-[37px] flex items-center justify-center rounded-full bg-[#fbfbfb] font-satoshi font-medium text-[16px] text-[#1d1d1f] hover:opacity-70 transition-opacity"
+                                style={{ boxShadow: "rgb(230, 230, 231) 0px -1px 0px 0px inset" }}
+                            >
+                                View in Library
+                            </Link>
+                        </div>
                     </div>
-                    <span className="text-[14px] font-medium text-[#1d1d1f]">Saved to Library</span>
-                    <Link href="/dashboard/library" className="text-[13px] font-bold text-[#0077b6] hover:text-[#00b4d8] transition-colors">
-                        View →
-                    </Link>
                 </div>
             )}
         </div>

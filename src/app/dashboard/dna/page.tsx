@@ -23,6 +23,11 @@ export default function DnaPage() {
     const [dna, setDna] = useState<BrandDNA | null>(null);
     const [activeTab, setActiveTab] = useState<Tab>("who");
     const [saved, setSaved] = useState(false);
+    const [analyzing, setAnalyzing] = useState(false);
+    const [analyzeStep, setAnalyzeStep] = useState(0); // 0=idle, 1=fetching, 2=analyzing, 3=extracting, 4=done
+    const [analyzeError, setAnalyzeError] = useState("");
+    const [analyzeSuccess, setAnalyzeSuccess] = useState(false);
+    const [analyzeMeta, setAnalyzeMeta] = useState<{ pagesScanned?: number; socialLinks?: string[]; favicon?: string; ogImage?: string } | null>(null);
     const [completion, setCompletion] = useState({ coreBasics: 0, brandVoice: 0, yourMarket: 0, visualStyle: 0, total: 0 });
     const colorInputRef = useRef<HTMLInputElement>(null);
     const logoInputRef = useRef<HTMLInputElement>(null);
@@ -42,6 +47,90 @@ export default function DnaPage() {
         setCompletion(getDNACompletion());
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
+    };
+
+    const handleAnalyzeUrl = async () => {
+        if (!dna || !dna.websiteUrl.trim()) return;
+        setAnalyzing(true);
+        setAnalyzeError("");
+        setAnalyzeSuccess(false);
+        setAnalyzeMeta(null);
+        setAnalyzeStep(1); // Fetching
+
+        try {
+            // Simulate step progress while API works
+            const stepTimer = setTimeout(() => setAnalyzeStep(2), 2500); // Analyzing
+            const stepTimer2 = setTimeout(() => setAnalyzeStep(3), 6000); // Extracting
+
+            const res = await fetch("/api/ai/brand-analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: dna.websiteUrl }),
+            });
+
+            clearTimeout(stepTimer);
+            clearTimeout(stepTimer2);
+
+            const json = await res.json();
+            if (!res.ok) {
+                setAnalyzeError(json.error || "Analysis failed");
+                setAnalyzeStep(0);
+                return;
+            }
+
+            setAnalyzeStep(4); // Done
+
+            const d = json.data;
+            const meta = json.meta;
+            setAnalyzeMeta(meta);
+
+            // Pick best social link
+            const socialLink = meta?.socialLinks?.[0] || "";
+
+            // Build update patch — AI data fills everything, existing user data preserved only if AI returns empty
+            const patch: Partial<BrandDNA> = {
+                name: d.name || dna.name,
+                mission: d.mission || dna.mission,
+                uniqueSellingPoints: d.uniqueSellingPoints || dna.uniqueSellingPoints,
+                industry: d.industry || dna.industry,
+                targetAudience: d.targetAudience || dna.targetAudience,
+                competitors: d.competitors || dna.competitors,
+                marketPosition: d.marketPosition || dna.marketPosition,
+                toneOfVoice: d.toneOfVoice?.length ? d.toneOfVoice.slice(0, 3) : dna.toneOfVoice,
+                writingStyle: d.writingStyle || dna.writingStyle,
+                colors: d.colors?.length ? d.colors.slice(0, 6) : dna.colors,
+                colorUsage: d.colorUsage || dna.colorUsage,
+                styleTags: d.styleTags?.length ? d.styleTags : dna.styleTags,
+                fonts: d.fonts?.length ? d.fonts.slice(0, 3) : dna.fonts,
+                language: d.language || dna.language,
+                goodCopyExamples: d.goodCopyExamples || dna.goodCopyExamples,
+                extraGuidelines: d.extraGuidelines || dna.extraGuidelines,
+                socialMediaUrl: socialLink || dna.socialMediaUrl,
+            };
+
+            // If AI detected a logo/favicon and user doesn't have one
+            if (!dna.logoUrl && meta?.favicon) {
+                patch.logoUrl = meta.favicon;
+            }
+
+            update(patch);
+
+            // Auto-save after analysis
+            const updatedDna = { ...dna, ...patch, updatedAt: new Date().toISOString() };
+            saveBrandDNA(updatedDna as BrandDNA);
+            setCompletion(getDNACompletion());
+
+            setAnalyzeSuccess(true);
+            setTimeout(() => {
+                setAnalyzeSuccess(false);
+                setAnalyzeStep(0);
+            }, 4000);
+        } catch {
+            setAnalyzeError("Could not connect to server. Please try again.");
+            setAnalyzeStep(0);
+        } finally {
+            setAnalyzing(false);
+        }
     };
 
     const toggleColor = (color: string) => {
@@ -215,8 +304,79 @@ export default function DnaPage() {
                             {/* Brand name + Website URL */}
                             <div className="flex gap-5 w-full">
                                 <FormField label="Brand name" value={dna.name} onChange={(v) => update({ name: v })} placeholder="e.g. Adona AI" />
-                                <FormField label="Website URL" value={dna.websiteUrl} onChange={(v) => update({ websiteUrl: v })} placeholder="https://adona.ai" />
+                                <div className="flex flex-col gap-2.5 flex-1">
+                                    <span className="text-[15px] font-bold text-[#03045e] px-2.5">Website URL</span>
+                                    <div className="flex gap-2">
+                                        <div className="bg-white border border-[#e6e6e7] rounded-[20px] px-2.5 py-2.5 flex-1">
+                                            <input type="text" value={dna.websiteUrl} onChange={(e) => update({ websiteUrl: e.target.value })} placeholder="https://yourbrand.com" className="w-full text-[15px] font-medium text-[#1d1d1f] bg-transparent outline-none placeholder-[#b0b0b5]" />
+                                        </div>
+                                        <button
+                                            onClick={handleAnalyzeUrl}
+                                            disabled={analyzing || !dna.websiteUrl.trim()}
+                                            className="shrink-0 flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-bold text-white transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
+                                            style={{ background: "linear-gradient(135deg, #03045e 0%, #0077b6 40%, #00b4d8 100%)" }}
+                                        >
+                                            {analyzing ? (
+                                                <>
+                                                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" /></svg>
+                                                    Analyzing...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 110 12A6 6 0 018 2z" stroke="white" strokeWidth="1.5" /><path d="M8 5v3l2 1.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                                    Scan &amp; Autofill
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                    {analyzeError && <p className="text-[13px] text-red-500 px-2.5">{analyzeError}</p>}
+                                </div>
                             </div>
+
+                            {/* Analysis Progress Overlay */}
+                            {analyzeStep > 0 && analyzeStep < 4 && (
+                                <div className="bg-white border border-[#e6e6e7] rounded-[20px] p-5 space-y-3">
+                                    <h3 className="text-[15px] font-bold text-[#03045e]">Scanning your brand...</h3>
+                                    {[
+                                        { step: 1, label: "Fetching website pages", desc: "Homepage, about, contact..." },
+                                        { step: 2, label: "Analyzing brand identity", desc: "Extracting colors, meta tags, social links..." },
+                                        { step: 3, label: "Building Brand DNA", desc: "AI is mapping your brand profile..." },
+                                    ].map((s) => (
+                                        <div key={s.step} className="flex items-center gap-3">
+                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all ${analyzeStep > s.step ? "bg-[#34C759]" : analyzeStep === s.step ? "bg-[#0077b6]" : "bg-[#e6e6e7]"}`}>
+                                                {analyzeStep > s.step ? (
+                                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                                ) : analyzeStep === s.step ? (
+                                                    <svg className="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" /></svg>
+                                                ) : (
+                                                    <span className="text-[10px] font-bold text-white">{s.step}</span>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <p className={`text-[14px] font-medium ${analyzeStep >= s.step ? "text-[#1d1d1f]" : "text-[#b0b0b5]"}`}>{s.label}</p>
+                                                <p className="text-[12px] text-[#6e6e73]">{s.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Analysis Success Summary */}
+                            {analyzeSuccess && analyzeMeta && (
+                                <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-[20px] p-5">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-6 h-6 rounded-full bg-[#34C759] flex items-center justify-center">
+                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        </div>
+                                        <span className="text-[15px] font-bold text-[#166534]">Brand DNA extracted &amp; auto-saved!</span>
+                                    </div>
+                                    <p className="text-[13px] text-[#166534]/80 ml-8">
+                                        Scanned {analyzeMeta.pagesScanned} page{(analyzeMeta.pagesScanned ?? 0) > 1 ? "s" : ""}
+                                        {(analyzeMeta.socialLinks?.length ?? 0) > 0 && <> &middot; Found {analyzeMeta.socialLinks?.length} social link{(analyzeMeta.socialLinks?.length ?? 0) > 1 ? "s" : ""}</>}
+                                        . All tabs have been populated. Review and adjust as needed.
+                                    </p>
+                                </div>
+                            )}
 
                             {/* Social media */}
                             <div className="flex gap-5">
