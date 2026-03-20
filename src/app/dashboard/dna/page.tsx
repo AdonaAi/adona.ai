@@ -106,6 +106,7 @@ export default function DnaPage() {
                 goodCopyExamples: d.goodCopyExamples || dna.goodCopyExamples,
                 extraGuidelines: d.extraGuidelines || dna.extraGuidelines,
                 socialMediaUrl: socialLink || dna.socialMediaUrl,
+                productImages: meta?.productImages?.length ? meta.productImages.slice(0, 8) : dna.productImages || [],
             };
 
             // If AI detected a logo/favicon and user doesn't have one

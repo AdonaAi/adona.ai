@@ -18,7 +18,9 @@ import {
     ChevronsUpDown,
     Menu,
     X,
+    Bot,
 } from "lucide-react";
+
 
 export default function DashboardLayout({
     children,
@@ -217,6 +219,18 @@ function SidebarContent({
                         </Link>
                         <Link
                             className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group"
+                            href="/dashboard/copilot"
+                        >
+                            <Bot
+                                size={18}
+                                strokeWidth={1.8}
+                                className="text-[#666666] group-hover:text-[#0077b6]"
+                            />
+                            <span className="text-[14px]">AI Copilot</span>
+                            <span className="ml-auto text-[10px] font-bold text-white bg-gradient-to-r from-[#0077b6] to-[#00b4d8] rounded-full px-2 py-0.5">NEW</span>
+                        </Link>
+                        <Link
+                            className="flex items-center gap-3 px-3 py-2.5 text-[#666666] hover:text-[#03045e] hover:bg-[#caf0f8]/30 rounded-xl transition-all group"
                             href="/dashboard/inspo"
                         >
                             <Sparkles
@@ -229,6 +243,7 @@ function SidebarContent({
                     </nav>
                 </div>
             </div>
+
             <div className="p-3 space-y-3 mt-auto">
                 <div className="flex items-center gap-3 p-2.5 bg-[#caf0f8]/40 rounded-xl border border-[#90e0ef]/30">
                     <div className="w-9 h-9 bg-gradient-to-br from-[#0077b6] to-[#00b4d8] rounded-lg flex items-center justify-center">

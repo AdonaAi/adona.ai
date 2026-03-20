@@ -4,7 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { saveMultipleToLibrary } from "@/lib/library";
-import { getBrandDNA, type BrandDNA } from "@/lib/brand-store";
+import { getBrandDNA, buildBrandImagePrompt, type BrandDNA } from "@/lib/brand-store";
+
 
 const ASPECT_RATIOS = [
     { label: "1:1", w: 20, h: 20 },
@@ -95,6 +96,8 @@ export default function ContentSwipePage() {
     const [savedToast, setSavedToast] = useState(false);
     const [brandDna, setBrandDna] = useState<BrandDNA | null>(null);
     const [useBrandDna, setUseBrandDna] = useState(true);
+    const [selectedRefImage, setSelectedRefImage] = useState<string | null>(null);
+    const [promptStrength, setPromptStrength] = useState(0.45);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -126,29 +129,9 @@ export default function ContentSwipePage() {
     /** Build an enhanced prompt that weaves in Brand DNA context */
     const buildBrandPrompt = (userPrompt: string): string => {
         if (!useBrandDna || !brandDna) return userPrompt;
-
-        const parts: string[] = [];
-
-        // Brand identity context
-        if (brandDna.name) parts.push(`for the brand "${brandDna.name}"`);
-        if (brandDna.industry) parts.push(`in the ${brandDna.industry} industry`);
-
-        // Visual style
-        if (brandDna.styleTags.length > 0) parts.push(`style: ${brandDna.styleTags.join(", ")}`);
-        if (brandDna.toneOfVoice.length > 0) parts.push(`mood: ${brandDna.toneOfVoice.join(", ").toLowerCase()}`);
-
-        // Colors
-        if (brandDna.colors.length > 0) {
-            parts.push(`brand color palette: ${brandDna.colors.join(", ")}`);
-        }
-
-        // Fonts hint
-        if (brandDna.fonts.length > 0) parts.push(`typography style: ${brandDna.fonts.join(", ")}`);
-
-        if (parts.length === 0) return userPrompt;
-
-        return `${userPrompt}. ${parts.join(". ")}. High quality, professional marketing creative.`;
+        return buildBrandImagePrompt(userPrompt, brandDna, !!selectedRefImage);
     };
+
 
     const handleGenerate = async () => {
         if (!prompt.trim()) return;
@@ -163,8 +146,14 @@ export default function ContentSwipePage() {
                 prompt: enhancedPrompt,
                 aspect_ratio: selectedRatio,
                 num_outputs: selectedAmount,
-                output_format: "webp",
+                output_format: "png",
             };
+
+            // img2img: pass reference product image + strength
+            if (selectedRefImage) {
+                payload.image = selectedRefImage;
+                payload.prompt_strength = promptStrength;
+            }
 
             if (negativePrompt.trim()) {
                 payload.negative_prompt = negativePrompt.trim();
@@ -196,7 +185,7 @@ export default function ContentSwipePage() {
                     negativePrompt: negativePrompt.trim() || undefined,
                     seed: seed.trim() ? Number(seed.trim()) : undefined,
                     aspectRatio: selectedRatio,
-                    model: "stable-diffusion-3.5-large-turbo",
+                    model: "google/nano-banana-pro",
                     source: "content-swipe",
                 });
                 setSavedToast(true);
@@ -261,8 +250,8 @@ export default function ContentSwipePage() {
                 {/* Model badge */}
                 <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full px-3 py-[7px]"
                     style={{ boxShadow: "0px 5px 10px 0px rgba(230,230,231,0.15), inset -2px 2px 10px 0px rgba(255,255,255,0.8)" }}>
-                    <span className="text-[14px]">🎨</span>
-                    <span className="text-[13px] font-medium text-[#03045e] ml-1">Stable Diffusion 3.5</span>
+                    <span className="text-[14px]">🍌</span>
+                    <span className="text-[13px] font-medium text-[#03045e] ml-1">Nano Banana Pro</span>
                 </div>
             </div>
 
@@ -461,6 +450,68 @@ export default function ContentSwipePage() {
                                             <div className={`w-[20px] h-[20px] rounded-full bg-white shadow transition-transform duration-200 ${useBrandDna ? "translate-x-[18px]" : "translate-x-0"}`} />
                                         </div>
                                     </button>
+                                </div>
+                            )}
+
+                            {/* ── Product Image Reference (img2img) ── */}
+                            {brandDna && useBrandDna && brandDna.productImages && brandDna.productImages.length > 0 && (
+                                <div className="flex flex-col gap-3 rounded-2xl px-4 py-3 bg-white border border-[#e2e8f0]">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[14px] font-bold text-[#03045e]">📸 Use product photo as reference</p>
+                                            <p className="text-[12px] text-[#6e6e73]">AI will generate new content based on your real product image</p>
+                                        </div>
+                                        {selectedRefImage && (
+                                            <button
+                                                onClick={() => setSelectedRefImage(null)}
+                                                className="text-[12px] text-red-500 hover:text-red-600 font-medium cursor-pointer"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="flex gap-2 flex-wrap">
+                                        {brandDna.productImages.map((imgUrl, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => setSelectedRefImage(selectedRefImage === imgUrl ? null : imgUrl)}
+                                                className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all cursor-pointer hover:opacity-90 ${
+                                                    selectedRefImage === imgUrl
+                                                        ? "border-[#0077b6] ring-2 ring-[#0077b6]/30 scale-105"
+                                                        : "border-[#e2e8f0] hover:border-[#90e0ef]"
+                                                }`}
+                                            >
+                                                <img src={imgUrl} alt={`Product ${i + 1}`} className="w-full h-full object-cover" />
+                                                {selectedRefImage === imgUrl && (
+                                                    <div className="absolute inset-0 bg-[#0077b6]/20 flex items-center justify-center">
+                                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5 6.5-7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                                    </div>
+                                                )}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {/* Prompt Strength slider */}
+                                    {selectedRefImage && (
+                                        <div className="flex flex-col gap-2 pt-1">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-[13px] font-medium text-[#03045e]">Creative freedom</span>
+                                                <span className="text-[12px] font-bold text-[#0077b6]">{Math.round(promptStrength * 100)}%</span>
+                                            </div>
+                                            <input
+                                                type="range"
+                                                min="0.15"
+                                                max="0.85"
+                                                step="0.05"
+                                                value={promptStrength}
+                                                onChange={(e) => setPromptStrength(Number(e.target.value))}
+                                                className="w-full accent-[#0077b6] h-1.5 rounded-full"
+                                            />
+                                            <div className="flex justify-between text-[11px] text-[#6e6e73]">
+                                                <span>Closer to original</span>
+                                                <span>More creative</span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 

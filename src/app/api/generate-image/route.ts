@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-/** Stable Diffusion 3.5 Large Turbo via Replicate */
-const SD_MODEL = "stability-ai/stable-diffusion-3.5-large-turbo";
+/** Google Nano Banana Pro Model */
+const MODEL_ID = "google/nano-banana-pro";
 
 export async function POST(request: NextRequest) {
     try {
@@ -10,10 +10,12 @@ export async function POST(request: NextRequest) {
             prompt,
             aspect_ratio = "1:1",
             num_outputs = 1,
-            output_format = "webp",
+            output_format = "png",
             negative_prompt,
             seed,
             cfg,
+            image,             // Reference image URL for img2img
+            prompt_strength,   // 0.0–1.0 — how much to deviate from reference
         } = body;
 
         if (!prompt || typeof prompt !== "string") {
@@ -25,6 +27,9 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Replicate API token not configured" }, { status: 500 });
         }
 
+        const isImg2Img = image && typeof image === "string" && image.startsWith("http");
+        const modelToUse = MODEL_ID;
+
         // Build input payload
         const input: Record<string, unknown> = {
             prompt,
@@ -32,6 +37,14 @@ export async function POST(request: NextRequest) {
             output_format,
             num_outputs: Math.min(num_outputs, 4),
         };
+
+        // img2img: pass reference image
+        if (isImg2Img) {
+            // Nano Banana Pro schema expects `image_input` as a file array
+            input.image_input = [image]; 
+            // We pass prompt_strength anyway, model will use it if supported
+            input.prompt_strength = prompt_strength !== undefined ? Number(prompt_strength) : 0.45;
+        }
 
         // Deterministic seed — critical for brand-consistent generation
         if (seed !== undefined && seed !== null && seed !== "") {
@@ -50,7 +63,7 @@ export async function POST(request: NextRequest) {
 
         // Create prediction using Replicate API
         const response = await fetch(
-            `https://api.replicate.com/v1/models/${SD_MODEL}/predictions`,
+            `https://api.replicate.com/v1/models/${modelToUse}/predictions`,
             {
                 method: "POST",
                 headers: {

@@ -126,7 +126,8 @@ function extractCssColors(html: string): string[] {
         }
     }
 
-    return [...colorSet].slice(0, 12);
+    // Increase to 50 so AI has a larger pool of hex codes to analyze and filter
+    return [...colorSet].slice(0, 50);
 }
 
 /** Extract structured text from HTML */
@@ -171,6 +172,58 @@ function extractLanguage(html: string): string {
     return metaLang || "";
 }
 
+/** Extract product/hero images from HTML pages */
+function extractProductImages(pages: string[], baseUrl: string): string[] {
+    const imageSet = new Set<string>();
+
+    for (const html of pages) {
+        // 1. OG images (usually hero/product photos)
+        const ogImage = extractMeta(html, "og:image");
+        if (ogImage && ogImage.startsWith("http")) {
+            imageSet.add(ogImage);
+        }
+
+        // 2. Twitter card images
+        const twImage = extractMeta(html, "twitter:image");
+        if (twImage && twImage.startsWith("http")) {
+            imageSet.add(twImage);
+        }
+
+        // 3. All <img> tags with src — filter out tiny icons
+        const imgMatches = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi) || [];
+        for (const imgTag of imgMatches) {
+            // Skip tiny images (likely icons/logos)
+            const widthMatch = imgTag.match(/width=["']?(\d+)/i);
+            const heightMatch = imgTag.match(/height=["']?(\d+)/i);
+            if (widthMatch && Number(widthMatch[1]) < 80) continue;
+            if (heightMatch && Number(heightMatch[1]) < 80) continue;
+
+            // Skip SVGs, tracking pixels, data URIs
+            const srcMatch = imgTag.match(/src=["']([^"']+)["']/i);
+            if (!srcMatch) continue;
+            let src = srcMatch[1];
+            if (src.startsWith("data:")) continue;
+            if (src.endsWith(".svg")) continue;
+            if (src.includes("pixel") || src.includes("tracking") || src.includes("spacer")) continue;
+            if (src.includes("icon") || src.includes("logo") || src.includes("favicon")) continue;
+
+            // Resolve relative URLs
+            if (src.startsWith("//")) {
+                src = `https:${src}`;
+            } else if (src.startsWith("/")) {
+                src = `${baseUrl}${src}`;
+            } else if (!src.startsWith("http")) {
+                src = `${baseUrl}/${src}`;
+            }
+
+            imageSet.add(src);
+        }
+    }
+
+    // Return up to 8 unique product images
+    return [...imageSet].slice(0, 8);
+}
+
 // ── Main Handler ─────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
@@ -195,12 +248,15 @@ export async function POST(request: NextRequest) {
 
         const origin = baseUrl.origin;
 
-        // ── Step 1: Multi-page fetch ──────────────────────
+        // ── Step 1: Multi-page fetch (including product pages) ──
         const pagesToFetch = [
             baseUrl.toString(),
             `${origin}/about`,
             `${origin}/about-us`,
             `${origin}/contact`,
+            `${origin}/products`,
+            `${origin}/shop`,
+            `${origin}/collections`,
         ];
 
         const results = await Promise.allSettled(pagesToFetch.map(safeFetch));
@@ -253,10 +309,10 @@ export async function POST(request: NextRequest) {
         const allPageText = pages
             .map((p) => cleanHtmlForAI(p))
             .join("\n---\n")
-            .slice(0, 12000);
+            .slice(0, 24000);
 
         // ── Step 6: GPT-4o analysis ───────────────────────
-        const systemPrompt = `You are an expert brand strategist and analyst. You are analyzing a brand's website to build a comprehensive Brand DNA profile.
+        const systemPrompt = `You are a world-class brand strategist and master copywriter. You are analyzing a brand's website to build an extremely robust, highly accurate, and deeply comprehensive Brand DNA profile.
 
 You will receive:
 1. Website metadata (title, description, OG tags)
@@ -264,21 +320,21 @@ You will receive:
 3. Social media links found
 4. Structured content (headings, paragraphs) from homepage and subpages
 
-Your task: Extract and infer brand identity. Be specific and detailed. Do NOT leave fields empty — use contextual clues to infer when not explicitly stated.
+Your task: Extract and infer brand identity with massive detail and precision. Go beyond surface-level text to infer the true essence, emotional hook, and competitive angle of the brand. Be highly specific. Do NOT leave fields empty — use contextual clues to infer when not explicitly stated.
 
 Return ONLY valid JSON (no markdown, no explanation) with this exact structure:
 {
-  "name": "exact brand name",
-  "mission": "brand mission, tagline, or core value proposition (2-3 sentences)",
-  "uniqueSellingPoints": "what makes this brand unique, key differentiators (2-3 sentences)",
+  "name": "exact brand name, carefully extracted",
+  "mission": "deep brand mission, emotional hook, or core value proposition (3-4 impactful sentences)",
+  "uniqueSellingPoints": "what truly makes this brand unique, key differentiators, or specific product benefits (3-4 sentences)",
   "industry": "MUST be one of: Beauty & Cosmetics, Fashion, Food & Beverage, Health & Fitness, Technology, E-commerce, Education, Real Estate, Finance, Travel & Hospitality, Other",
-  "targetAudience": "detailed target audience description — demographics, psychographics, pain points (2-3 sentences)",
-  "competitors": "3-5 likely competitors, comma-separated",
-  "marketPosition": "how the brand positions itself vs competitors (2-3 sentences)",
-  "toneOfVoice": ["exactly 2-3 values from: Professional, Friendly, Bold, Playful, Luxury, Minimalist, Warm, Edgy, Inspirational, Casual, Formal, Witty"],
+  "targetAudience": "highly detailed target audience description — precise demographics, deep psychographics, hidden pain points, and desires (3-4 sentences)",
+  "competitors": "4-6 likely direct competitors, comma-separated",
+  "marketPosition": "deep analysis on how the brand positions itself vs competitors in the market hierarchy (3-4 sentences)",
+  "toneOfVoice": ["exactly 3-4 values from: Professional, Friendly, Bold, Playful, Luxury, Minimalist, Warm, Edgy, Inspirational, Casual, Formal, Witty"],
   "language": "primary language of the website content (e.g., English, Bahasa Indonesia, etc.)",
   "writingStyle": "description of their writing style — sentence length, formality, use of jargon, etc.",
-  "colors": ["3-6 hex color codes that best represent the brand, prioritize actual brand colors over generic ones"],
+  "colors": ["3-6 hex color codes that best represent the brand. CRITICAL: prioritize bold/vibrant primary brand colors (used for buttons, logos, active states, main themes). Exclude generic grays, blacks, and off-whites unless absolutely central to the identity"],
   "colorUsage": "how colors are used — primary, secondary, accent descriptions",
   "fonts": ["1-3 font names detected or most likely used, from: Inter, Satoshi, Playfair Display, Roboto, Montserrat, Poppins, Lora, DM Sans, Space Grotesk, Outfit"],
   "styleTags": ["3-5 visual style keywords like: modern, clean, bold, minimalist, luxury, playful, corporate, etc."],
@@ -304,19 +360,19 @@ ${detectedColors.join(", ") || "None detected"}
 ${[...allSocialLinks].join("\n") || "None found"}
 
 === HEADINGS ===
-${structured.headings.slice(0, 2000)}
+${structured.headings.slice(0, 4000)}
 
 === BODY CONTENT ===
 ${allPageText}`;
 
         const completion = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: "gpt-4o",
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt },
             ],
-            temperature: 0.2,
-            max_tokens: 1500,
+            temperature: 0.1,
+            max_tokens: 2500,
             response_format: { type: "json_object" },
         });
 
@@ -337,6 +393,9 @@ ${allPageText}`;
             }
         }
 
+        // ── Step 7: Extract product images ─────────────────
+        const productImages = extractProductImages(pages, origin);
+
         // Merge in extracted data that AI might have missed
         return NextResponse.json({
             success: true,
@@ -348,6 +407,7 @@ ${allPageText}`;
                 favicon: metadata.favicon,
                 ogImage: metadata.ogImage,
                 language: metadata.language,
+                productImages,
             },
         });
     } catch (error) {

@@ -37,6 +37,7 @@ export interface BrandDNA {
     colors: string[];
     colorUsage: string;
     logoUrl: string;
+    productImages: string[];
     fonts: string[];
     styleTags: string[];
 
@@ -86,7 +87,7 @@ export function getDefaultDNA(): BrandDNA {
         toneOfVoice: [], language: "", useEmojis: true,
         goodCopyExamples: "", badCopyExamples: "", writingStyle: "",
         industry: "", targetAudience: "", competitors: "", marketPosition: "",
-        colors: [], colorUsage: "", logoUrl: "", fonts: [], styleTags: [],
+        colors: [], colorUsage: "", logoUrl: "", productImages: [], fonts: [], styleTags: [],
         socialMediaUrl: "",
         updatedAt: "",
     };
@@ -152,6 +153,107 @@ export function getDNACompletion(): {
     const total = Math.round((coreBasics + brandVoice + yourMarket + visualStyle) / 4);
 
     return { coreBasics, brandVoice, yourMarket, visualStyle, total };
+}
+
+// ─── Brand System Prompt Builder ─────────────────────────
+/**
+ * Converts stored Brand DNA into a comprehensive GPT system prompt.
+ * Use this in ALL AI generation routes to inject brand context.
+ *
+ * @param dna - The saved BrandDNA object
+ * @returns A detailed system prompt string for GPT
+ */
+export function buildBrandSystemPrompt(dna: BrandDNA): string {
+    const lines: string[] = [
+        "You are an expert AI copywriter and creative strategist specialized in on-brand content generation.",
+        "You have been given the following Brand DNA profile. You MUST use it to produce content that feels authentic, consistent, and tailored to this specific brand.",
+        "",
+        "=== BRAND DNA ===",
+    ];
+
+    if (dna.name) lines.push(`Brand Name: ${dna.name}`);
+    if (dna.industry) lines.push(`Industry: ${dna.industry}`);
+    if (dna.mission) lines.push(`Mission / What We Do: ${dna.mission}`);
+    if (dna.uniqueSellingPoints) lines.push(`Unique Value / USP: ${dna.uniqueSellingPoints}`);
+    if (dna.targetAudience) lines.push(`Target Audience: ${dna.targetAudience}`);
+    if (dna.marketPosition) lines.push(`Market Position: ${dna.marketPosition}`);
+    if (dna.competitors) lines.push(`Competitors: ${dna.competitors}`);
+
+    if (dna.toneOfVoice.length > 0) {
+        lines.push(`Tone of Voice: ${dna.toneOfVoice.join(", ")}`);
+    }
+    if (dna.writingStyle) lines.push(`Writing Style: ${dna.writingStyle}`);
+    if (dna.language) lines.push(`Language: ${dna.language}`);
+    lines.push(`Use Emojis: ${dna.useEmojis ? "Yes, use them sparingly and naturally" : "No emojis"}`);
+
+    if (dna.goodCopyExamples) {
+        lines.push("", "Good Copy Examples (match this style):");
+        lines.push(dna.goodCopyExamples);
+    }
+    if (dna.badCopyExamples) {
+        lines.push("", "Bad Copy Examples (AVOID this style):");
+        lines.push(dna.badCopyExamples);
+    }
+
+    if (dna.colors.length > 0) {
+        lines.push(`Brand Colors: ${dna.colors.join(", ")}`);
+    }
+    if (dna.styleTags.length > 0) {
+        lines.push(`Visual Style Keywords: ${dna.styleTags.join(", ")}`);
+    }
+    if (dna.fonts.length > 0) {
+        lines.push(`Typography: ${dna.fonts.join(", ")}`);
+    }
+    if (dna.colorUsage) lines.push(`Color Usage Notes: ${dna.colorUsage}`);
+    if (dna.extraGuidelines) {
+        lines.push("", "Extra Brand Guidelines:");
+        lines.push(dna.extraGuidelines);
+    }
+
+    lines.push(
+        "",
+        "=== INSTRUCTIONS ===",
+        "- Always write in the brand's voice and tone described above.",
+        "- Speak directly to the target audience's needs, desires, and pain points.",
+        "- Reflect the brand's market position and unique value proposition.",
+        "- Keep the language consistent with the brand's style (sentence length, formality, energy).",
+        "- Do NOT use generic, bland, or off-brand language.",
+        "- NEVER mention competitors in a negative way.",
+        dna.language && dna.language.toLowerCase() !== "english"
+            ? `- Write in ${dna.language} unless otherwise instructed.`
+            : "- Write in English unless otherwise instructed.",
+    );
+
+    return lines.filter((l) => l !== undefined).join("\n");
+}
+
+/**
+ * Build an enhanced image generation prompt that weaves in Brand DNA visual context.
+ * Use this in image generation flows to keep visuals on-brand.
+ */
+export function buildBrandImagePrompt(userPrompt: string, dna: BrandDNA, isImageRef: boolean = false): string {
+    const parts: string[] = [];
+
+    if (dna.name) parts.push(`for the brand "${dna.name}"`);
+    if (dna.industry && !isImageRef) parts.push(`in the ${dna.industry} industry`);
+    
+    if (isImageRef) {
+        // Less descriptive for img2img so it doesn't override the existing product
+        if (dna.styleTags.length > 0) parts.push(`subtle ${dna.styleTags.slice(0, 2).join(", ")} aesthetics`);
+    } else {
+        if (dna.styleTags.length > 0) parts.push(`style: ${dna.styleTags.join(", ")}`);
+        if (dna.toneOfVoice.length > 0) parts.push(`mood: ${dna.toneOfVoice.join(", ").toLowerCase()}`);
+        if (dna.targetAudience) parts.push(`visual appeal to: ${dna.targetAudience.slice(0, 80)}`);
+        if (dna.fonts.length > 0) parts.push(`typography style: ${dna.fonts.join(", ")}`);
+    }
+
+    if (dna.colors.length > 0) parts.push(`brand color palette: ${dna.colors.join(", ")}`);
+
+    if (isImageRef) {
+        return `${userPrompt}. Professional marketing ad, ${parts.join(", ")}. Keep the main subject exactly the same. No typos, perfectly spelled text, highly attractive Call to Action (CTA) button, glowing holographic modern tech accents.`;
+    }
+
+    return `${userPrompt}. ${parts.join(". ")}. High quality, professional marketing ad creative, highly attractive Call to Action (CTA) button, glowing holographic modern tech accents, 100% accurate spelling, no typos.`;
 }
 
 // ─── Legacy compat for dashboard "Start Here" card ───────
