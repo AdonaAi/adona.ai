@@ -18,7 +18,17 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { buildBrandSystemPrompt, type BrandDNA } from "@/lib/brand-store";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Lazy-initialize OpenAI to prevent build-time crashes when API_KEY is missing
+let openaiInstance: OpenAI | null = null;
+function getOpenAI() {
+    if (!openaiInstance) {
+        if (!process.env.OPENAI_API_KEY) {
+            throw new Error("Missing OPENAI_API_KEY environment variable");
+        }
+        openaiInstance = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    }
+    return openaiInstance;
+}
 
 type GenerationType = "ad-copy" | "caption" | "hook" | "content-ideas" | "email-subject" | "hashtags" | "tagline";
 
@@ -122,6 +132,7 @@ export async function POST(request: NextRequest) {
 
         const userPrompt = buildUserPrompt(type, brief.trim(), dna || {} as BrandDNA);
 
+        const openai = getOpenAI();
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
