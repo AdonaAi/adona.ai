@@ -87,31 +87,38 @@ export default function DnaPage() {
             // Pick best social link
             const socialLink = meta?.socialLinks?.[0] || "";
 
-            // Build update patch — AI data fills everything, existing user data preserved only if AI returns empty
+            // Build update patch — NEW scan ALWAYS replaces old data (this is a fresh brand scan)
             const patch: Partial<BrandDNA> = {
-                name: d.name || dna.name,
-                mission: d.mission || dna.mission,
-                uniqueSellingPoints: d.uniqueSellingPoints || dna.uniqueSellingPoints,
-                industry: d.industry || dna.industry,
-                targetAudience: d.targetAudience || dna.targetAudience,
-                competitors: d.competitors || dna.competitors,
-                marketPosition: d.marketPosition || dna.marketPosition,
-                toneOfVoice: d.toneOfVoice?.length ? d.toneOfVoice.slice(0, 3) : dna.toneOfVoice,
-                writingStyle: d.writingStyle || dna.writingStyle,
-                colors: d.colors?.length ? d.colors.slice(0, 6) : dna.colors,
-                colorUsage: d.colorUsage || dna.colorUsage,
-                styleTags: d.styleTags?.length ? d.styleTags : dna.styleTags,
-                fonts: d.fonts?.length ? d.fonts.slice(0, 3) : dna.fonts,
-                language: d.language || dna.language,
-                goodCopyExamples: d.goodCopyExamples || dna.goodCopyExamples,
-                extraGuidelines: d.extraGuidelines || dna.extraGuidelines,
-                socialMediaUrl: socialLink || dna.socialMediaUrl,
-                productImages: meta?.productImages?.length ? meta.productImages.slice(0, 8) : dna.productImages || [],
+                name: d.name || "",
+                mission: d.mission || "",
+                uniqueSellingPoints: d.uniqueSellingPoints || "",
+                industry: d.industry || "",
+                targetAudience: d.targetAudience || "",
+                competitors: d.competitors || "",
+                marketPosition: d.marketPosition || "",
+                toneOfVoice: d.toneOfVoice?.length ? d.toneOfVoice.slice(0, 3) : [],
+                writingStyle: d.writingStyle || "",
+                colors: d.colors?.length ? d.colors.slice(0, 6) : [],
+                colorUsage: d.colorUsage || "",
+                styleTags: d.styleTags?.length ? d.styleTags : [],
+                fonts: d.fonts?.length ? d.fonts.slice(0, 3) : [],
+                language: d.language || "",
+                goodCopyExamples: d.goodCopyExamples || "",
+                extraGuidelines: d.extraGuidelines || "",
+                socialMediaUrl: socialLink || "",
+                productImages: meta?.productImages?.length ? meta.productImages.slice(0, 8) : [],
             };
 
-            // If AI detected a logo/favicon and user doesn't have one
-            if (!dna.logoUrl && meta?.favicon) {
-                patch.logoUrl = meta.favicon;
+            // Always update logo when scanning a new brand
+            // Priority: logo URLs from page > OG image > favicon
+            const bestLogo = meta?.logoUrls?.[0] || meta?.ogImage || meta?.favicon;
+            if (bestLogo) {
+                patch.logoUrl = bestLogo;
+            }
+
+            // Update social media link for the NEW brand (not keep old one)
+            if (socialLink) {
+                patch.socialMediaUrl = socialLink;
             }
 
             update(patch);

@@ -168,8 +168,8 @@ export default function Navbar() {
                 alt="adona.ai"
                 width={180}
                 height={50}
-                // Moderate logo size for navbar
-                className="object-contain h-[40px] sm:h-[48px] md:h-[56px] w-auto"
+                // Optimized logo size for mobile
+                className="object-contain h-[32px] sm:h-[48px] md:h-[56px] w-auto"
                 priority
                 unoptimized
               />
@@ -249,9 +249,9 @@ export default function Navbar() {
             {/* Buy Now Button */}
             <Link
               href="/pricing"
-              className="group relative inline-flex items-center justify-center px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_4px_20px_rgba(0,119,182,0.4)] active:scale-95 bg-linear-to-r from-[#03045e] via-[#0077b6] to-[#00b4d8]"
+              className="group relative inline-flex items-center justify-center px-3 sm:px-6 md:px-8 py-1.5 sm:py-2.5 md:py-3 lg:py-3.5 rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_4px_20px_rgba(0,119,182,0.4)] active:scale-95 bg-linear-to-r from-[#03045e] via-[#0077b6] to-[#00b4d8]"
             >
-              <span className="relative z-10 font-bold text-[13px] sm:text-[15px] md:text-[16px] text-white tracking-wide whitespace-nowrap">
+              <span className="relative z-10 font-bold text-[12px] sm:text-[15px] md:text-[16px] text-white tracking-wide whitespace-nowrap">
                 Buy now
               </span>
             </Link>

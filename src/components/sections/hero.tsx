@@ -27,9 +27,11 @@ export default function Hero() {
           </div>
         </div>
 
-        <h1 className="mb-6 sm:mb-7 md:mb-8 font-[900] leading-[1.1] tracking-[-0.02em] font-display text-[#03045e] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 max-w-[1200px] mx-auto px-2 sm:px-4 md:px-0" style={{ fontSize: 'clamp(1.5rem, 4.5vw, 3.5rem)' }}>
-          <span className="whitespace-nowrap">Multiply Your Content with AI-Powered</span>
-          <span className="block mt-1 sm:mt-2 text-[#0077b6]" style={{ fontSize: 'clamp(1.6rem, 5vw, 3.75rem)' }}>Conversion Driven Creatives.</span>
+        <h1 className="mb-6 sm:mb-7 md:mb-8 font-[900] leading-[1.2] tracking-[-0.025em] font-display text-[#03045e] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-0 hero-title-force-2-lines">
+          <span>Multiply Your Content with AI-Powered</span>
+          <span className="accent-line text-[#0077b6]">
+            Conversion Driven Creatives.
+          </span>
         </h1>
 
         {/* Sub-headline */}

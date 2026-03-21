@@ -293,4 +293,19 @@
     background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%);
     background-attachment: fixed;
   }
+
+  /* Robust utility to prevent hero headline breaks on mobile */
+  .hero-title-force-2-lines {
+    @apply w-full text-center;
+  }
+  
+  .hero-title-force-2-lines span {
+    @apply whitespace-nowrap inline-block;
+    font-size: clamp(1.1rem, 4.8vw, 3.5rem) !important;
+  }
+
+  .hero-title-force-2-lines span.accent-line {
+    @apply block mt-1 sm:mt-3 whitespace-nowrap;
+    font-size: clamp(1.2rem, 5.2vw, 3.75rem) !important;
+  }
 }
