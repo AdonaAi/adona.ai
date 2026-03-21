@@ -28,7 +28,7 @@ export default function Hero() {
         </div>
 
         <h1 className="mb-6 sm:mb-7 md:mb-8 font-[900] leading-[1.2] tracking-[-0.025em] font-display text-[#03045e] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 max-w-[1200px] mx-auto px-4 sm:px-6 md:px-0 hero-title-force-2-lines">
-          <span>Multiply Your Content with Modern Tech</span>
+          <span>Multiply Your Content with AI-Powered</span>
           <span className="accent-line text-[#0077b6]">
             Conversion Driven Creatives.
           </span>
