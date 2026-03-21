@@ -14,7 +14,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Lazy-initialize OpenAI to prevent build-time crashes when API_KEY is missing
+let openaiInstance: OpenAI | null = null;
+function getOpenAI() {
+    if (!openaiInstance) {
+        if (!process.env.OPENAI_API_KEY) {
+            throw new Error("Missing OPENAI_API_KEY environment variable");
+        }
+        openaiInstance = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    }
+    return openaiInstance;
+}
 
 // ── Helpers ──────────────────────────────────────────────
 
@@ -267,6 +277,7 @@ async function analyzeImageColors(imageUrls: string[]): Promise<{ colors: string
     if (imageUrls.length === 0) return null;
 
     try {
+        const openai = getOpenAI();
         const imageContent = imageUrls.slice(0, 2).map((url) => ({
             type: "image_url" as const,
             image_url: { url, detail: "low" as const },
@@ -609,6 +620,8 @@ export async function POST(request: NextRequest) {
             .slice(0, 24000);
 
         // ── Step 6: GPT-4o analysis ───────────────────────
+        const openai = getOpenAI();
+
         const systemPrompt = `You are a world-class brand strategist and master copywriter. You are analyzing a brand's website to build an extremely robust, highly accurate, and deeply comprehensive Brand DNA profile.
 
 You will receive:
